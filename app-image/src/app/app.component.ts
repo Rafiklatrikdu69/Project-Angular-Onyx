@@ -1,18 +1,24 @@
 import { Component } from '@angular/core';
 import { UserService } from './services/user.service';
 import { User } from '../app/modules/User';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']  // Correction de la coquille ici (styleUrl -> styleUrls)
 })
 export class AppComponent {
   title = 'app-image';
-  users : User[]= [];
- constructor(private UserService:UserService){}
- ngOnInit() {
-  this.UserService.getUser().subscribe((result:User[]) => (this.users = result , console.log(this.users)));
-  console.log("test");
+  users: User[] = [];
+  tab = [];
+
+  constructor(private userService: UserService) {}
+
+  ngOnInit() {
+    this.userService.getUser().subscribe((result: User[]) => {
+      this.users = result;
+      console.log(this.users);
+    });
+  }
   
- };
 }

@@ -14,7 +14,7 @@ export class UserService {
   }
 
   public getUser(): Observable<User[]> {
-    return this.http.get<User[]>('http://localhost:5148/api/User',{
+    return this.http.get<User[]>('https://localhost:7289/api/User',{
       headers: new HttpHeaders({
          'Content-Type': 'application/json',
          'Access-Control-Allow-Origin': 'localhost:5000',
