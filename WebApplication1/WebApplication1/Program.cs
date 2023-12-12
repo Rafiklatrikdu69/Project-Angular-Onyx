@@ -1,3 +1,5 @@
+using WebApplication1.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,6 +13,8 @@ builder.Services.AddCors(options  => options.AddPolicy(name : "App_user",
         {
             policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
         }));
+// Ajoutez cette ligne dans la méthode ConfigureServices de votre classe Startup
+builder.Services.AddScoped<ConnexionBD>();
 
 var app = builder.Build();
 

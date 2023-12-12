@@ -12,7 +12,9 @@ export class UserService {
   constructor(private http: HttpClient) { 
 
   }
-
+  public createTable(){
+    return this.http.get('https://localhost:7289/api/Test');
+  }
   public getUser(): Observable<User[]> {
     return this.http.get<User[]>('https://localhost:7289/api/User',{
       headers: new HttpHeaders({
