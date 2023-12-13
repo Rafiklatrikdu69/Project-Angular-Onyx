@@ -7,16 +7,28 @@ import { AppComponent } from './app.component';
 import { UserComponent } from './components/user/user.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NgFor } from '@angular/common';
+import { FormConnexionComponent } from './components/form-connexion/form-connexion.component';
+import { HomeComponent } from './components/home/home.component';
+
+import { InscriptionFormComponent } from './components/inscription-form/inscription-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
+    
     AppComponent,
-    UserComponent
+    UserComponent,
+    FormConnexionComponent,
+    HomeComponent,
+    InscriptionFormComponent
   ],
   imports: [
+    
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

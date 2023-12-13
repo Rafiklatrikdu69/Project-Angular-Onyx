@@ -29,5 +29,12 @@ export class UserService {
        })
      })
   }
+
+  public checkUserExists(pseudo:string) {
+
+    const myData = { id: '1', name: 'Lukas' ,email:"12"};
+    return  this.http.post("https://localhost:7289/api/User/userSelect", myData,{responseType: 'text'});
+}
   
+
 }

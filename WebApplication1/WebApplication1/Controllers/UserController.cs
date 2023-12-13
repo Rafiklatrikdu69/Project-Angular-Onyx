@@ -47,6 +47,33 @@ namespace WebApplication1.Controllers
             }
         }
 
+        [HttpPost("userSelect")]
+        public String verifyUtilisateur([FromBody] User myObject)
+        {
+            string connection = "server=127.0.0.1;user=root;database=test;password=";
+            myConnection = new MySqlConnection(connection);
+            myConnection.Open();
+            var id = myObject.ID;
+            var name = myObject.Name;
+            var email = myObject.Email;
+
+            string sql = "SELECT Nom from  matable WHERE Nom=@nom;";
+            MySqlCommand command = new MySqlCommand(sql, myConnection);
+            command.Parameters.AddWithValue("@nom", name);
+
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    Console.WriteLine("l'utilisateur est deja present !");
+                    Console.WriteLine(String.Format("{0}", reader["Nom"]));
+                    return "existe";
+                }
+               
+                return "Existe pas !";
+            }
+        }
+
 
         [HttpPost("userInsert")]
         public void test([FromBody] User myObject)
@@ -68,5 +95,6 @@ namespace WebApplication1.Controllers
                 Console.WriteLine("Table créée avec succès !");
             }
         }
+
     }
 }
