@@ -1,8 +1,8 @@
 
-<form action="">
+<form  [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
     <label>Pseudo</label>
-    <input class="btn-primary" type="text">
-
+    <input class="btn-primary" type="text" name="username">
+    <input class="btn-donate" type="submit" value="Valider">
 </form>
 
-<button class="btn-donate">Valider</button> 
+
