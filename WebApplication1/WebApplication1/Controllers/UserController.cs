@@ -46,5 +46,27 @@ namespace WebApplication1.Controllers
                 Console.WriteLine("Table créée avec succès !");
             }
         }
+
+
+        [HttpPost("userInsert")]
+        public void test([FromBody] User myObject)
+        {
+            string connection = "server=127.0.0.1;user=root;database=test;password=";
+            myConnection = new MySqlConnection(connection);
+            myConnection.Open();
+            var id = myObject.ID;
+            var name = myObject.Name;
+            var email = myObject.Email;
+            string sql = "INSERT INTO matable (Nom,Age) VALUES (@nom,@email);";
+            using (MySqlCommand command = new MySqlCommand(sql, myConnection))
+            {
+                //command.Parameters.AddWithValue("@id",3);
+                command.Parameters.AddWithValue("@nom", name);
+                command.Parameters.AddWithValue("@email", email);
+
+                command.ExecuteNonQuery();
+                Console.WriteLine("Table créée avec succès !");
+            }
+        }
     }
 }

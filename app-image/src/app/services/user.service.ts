@@ -15,6 +15,10 @@ export class UserService {
   public createTable(){
     return this.http.get('https://localhost:7289/api/Test');
   }
+    public insertTable(){
+      const myData = { id: '1', name: 'Lukas' ,email:"12"};
+    return  this.http.post("https://localhost:7289/api/User/userInsert", myData);
+   }
   public getUser(): Observable<User[]> {
     return this.http.get<User[]>('https://localhost:7289/api/User',{
       headers: new HttpHeaders({
