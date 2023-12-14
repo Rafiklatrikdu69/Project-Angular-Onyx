@@ -1,0 +1,132 @@
+name: dockercompose10736691313018972006
+services:
+  app-image-backend:
+    build:
+      context: C:\Users\Rafik\Documents\Project-Angular-Onyx\app-image-backend
+      dockerfile: app-image-backend/Dockerfile
+      args:
+        BUILD_CONFIGURATION: Debug
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: app-image-backend
+      target: build
+    container_name: app-image-backend
+    depends_on:
+      mysql_db:
+        condition: service_started
+        required: true
+    entrypoint:
+      - tail
+      - -f
+      - /dev/null
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_HTTPS_PORTS: "8081"
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: "1"
+      NUGET_FALLBACK_PACKAGES: /.nuget/fallbackpackages
+    image: appimagebackend:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /.nuget/packages --additionalProbingPath /.nuget/fallbackpackages  "/app/bin/Debug/net8.0/app-image-backend.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 443
+        published: "4015"
+        protocol: tcp
+      - mode: ingress
+        target: 8080
+        protocol: tcp
+      - mode: ingress
+        target: 8081
+        protocol: tcp
+    tty: true
+    volumes:
+      - type: bind
+        source: C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages
+        target: /.nuget/fallbackpackages
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\Rafik\.nuget\packages\
+        target: /.nuget/packages
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\HotReload
+        target: /HotReloadAgent
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Sdks\Microsoft.Docker.Sdk\tools\HotReloadProxy\linux-x64\net6.0
+        target: /HotReloadProxy
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Sdks\Microsoft.Docker.Sdk\tools\TokenService.Proxy\linux-x64\net6.0
+        target: /TokenService.Proxy
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\Rafik\Documents\Project-Angular-Onyx\app-image-backend\app-image-backend
+        target: /app
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\Rafik\AppData\Roaming/ASP.NET/Https
+        target: /home/app/.aspnet/https
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\Rafik\AppData\Roaming/Microsoft/UserSecrets
+        target: /home/app/.microsoft/usersecrets
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\Rafik\vsdbg\vs2017u5
+        target: /remote_debugger
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\Rafik\AppData\Roaming/ASP.NET/Https
+        target: /root/.aspnet/https
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\Rafik\AppData\Roaming/Microsoft/UserSecrets
+        target: /root/.microsoft/usersecrets
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\Rafik\Documents\Project-Angular-Onyx\app-image-backend
+        target: /src
+        bind:
+          create_host_path: true
+  mysql_db:
+    command:
+      - --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: Sportify
+      MYSQL_PASSWORD: mypassword
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: myuser
+    image: mysql:latest
+    networks:
+      default: null
+networks:
+  default:
+    name: dockercompose10736691313018972006_default
