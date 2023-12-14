@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Form, FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -9,42 +9,41 @@ import { UserService } from '../../services/user.service';
 })
 export class InscriptionFormComponent {
   
-  public userForm:FormGroup; // variable is created of type FormGroup is created
-  first_name: string = ""; // Variable is created to show the input value below the button
-  constructor( private fb: FormBuilder,private userService: UserService) {
-    // Form element defined below
-    this.userForm = this.fb.group({
-      first_name: ''
-    });
+   userForm : any ={
+    pseudo: null
+   }; 
+form:any={
+  pseudo: null
+}
+  constructor(private userService: UserService) {
 
-    this.userForm = new FormGroup({
-      username : new FormControl("", Validators.required)
-    })
+  
+  
   }
-  setValue() {
-    this.first_name=this.userForm.get('first_name')?.value; // input value retrieved
+  
+  onSubmit() :void{
+ 
+    if(this.form.pseudo!=undefined){
+      console.log(this.form.pseudo);
+        console.log("on va tester");
 
+        this.userService.checkUserExists(this.form.pseudo).subscribe(data=>{
+          console.log(data)
+          if(data=="Existe pas !"){
+            this.userService.insertTable(this.form.pseudo).subscribe();
+          }
+        }
+          );
+    }
+  
   }
-  onSubmit(){
-    
-  }
- public checkoutForm(){
-  if(!this.userForm.get('username')?.valid ){
-    alert("veuillez entrez quelque chose !")
-    console.log("veuillez entrez quelque chose !");
-  }
-  }
+  
   ngOnInit() {
     
-    this.userService.checkUserExists("Lukas").subscribe(data=>{
-      console.log(data)
-      if(data=="Existe pas !"){
-        this.userService.insertTable().subscribe();
-      }
-    }
+   
     
       //console.log(data) 
-      );
+      
     //this.userService.insertTable().subscribe();
     //this.userService.checkUserExists("Lukas").subscribe();
     

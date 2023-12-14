@@ -8,12 +8,38 @@ import { UserService } from '../../services/user.service';
   styleUrl: './form-connexion.component.scss'
 })
 export class FormConnexionComponent {
+  form:any={
+    pseudo: null
+  }
+    constructor(private userService: UserService) {
+  
+    
+    
+    }
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     
   }
   
+  onSubmit() :void{
+ 
+    if(this.form.pseudo!=undefined){
+      console.log(this.form.pseudo);
+        console.log("on va tester");
+
+        this.userService.checkUserExists(this.form.pseudo).subscribe(data=>{
+          console.log(data)
+          if(data=="Existe pas !"){
+            alert("desoler le pseudo que vous avez indiquer n'existe pas ! ")
+          }else{
+            alert("Vous etes connectez !")
+          }
+        }
+          );
+    }
+  
+  }
 }
 
 

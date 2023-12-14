@@ -11,7 +11,7 @@ import { FormConnexionComponent } from './components/form-connexion/form-connexi
 import { HomeComponent } from './components/home/home.component';
 
 import { InscriptionFormComponent } from './components/inscription-form/inscription-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     AppRoutingModule,
     HttpClientModule,
     BrowserModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
