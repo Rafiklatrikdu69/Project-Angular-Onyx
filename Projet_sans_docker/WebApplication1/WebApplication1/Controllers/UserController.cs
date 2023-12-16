@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using MySql.Data.MySqlClient;
 using WebApplication1.Models;
 
@@ -12,15 +11,24 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private MySqlConnection myConnection;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private static ISession _sharedSession;
+        private readonly string _connectionString = "server=127.0.0.1;user=root;database=test;password=";
+        private MySqlConnection _myConnection;
+
+        public UserController(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+        }
+
         [HttpGet]
-        public async Task<ActionResult<List<User>>> getUsers()
+        public async Task<ActionResult<List<User>>> GetUsers()
         {
             return new List<User>
             {
                 new User
                 {
-                    ID = 12,
+                    ID = 1223213,
                     Name = "Rafik",
                     Email = "raffraff721@gmail.com"
                 },
@@ -34,13 +42,12 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("insert")]
-        public void createUser()
+        public void CreateUser()
         {
-            string connection = "server=127.0.0.1;user=root;database=test;password=";
-            myConnection = new MySqlConnection(connection);
-            myConnection.Open();
+            _myConnection = new MySqlConnection(_connectionString);
+            _myConnection.Open();
             string sql = "INSERT INTO `matable` (Nom, Age) VALUES ('Rafik', 124);";
-            using (MySqlCommand command = new MySqlCommand(sql, myConnection))
+            using (MySqlCommand command = new MySqlCommand(sql, _myConnection))
             {
                 command.ExecuteNonQuery();
                 Console.WriteLine("Table créée avec succès !");
@@ -48,53 +55,71 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost("userSelect")]
-        public String verifyUtilisateur([FromBody] User myObject)
+        public string VerifyUtilisateur([FromBody] User myObject)
         {
-            string connection = "server=127.0.0.1;user=root;database=test;password=";
-            myConnection = new MySqlConnection(connection);
-            myConnection.Open();
-            var id = myObject.ID;
+            _myConnection = new MySqlConnection(_connectionString);
+            _myConnection.Open();
             var name = myObject.Name;
-            var email = myObject.Email;
 
-            string sql = "SELECT Nom from  matable WHERE Nom=@nom;";
-            MySqlCommand command = new MySqlCommand(sql, myConnection);
-            command.Parameters.AddWithValue("@nom", name);
-
-            using (MySqlDataReader reader = command.ExecuteReader())
+            string sql = "SELECT Nom from matable WHERE Nom=@nom;";
+            using (MySqlCommand command = new MySqlCommand(sql, _myConnection))
             {
-                if (reader.Read())
+                command.Parameters.AddWithValue("@nom", name);
+                using (MySqlDataReader reader = command.ExecuteReader())
                 {
-                    Console.WriteLine("l'utilisateur est deja present !");
-                    Console.WriteLine(String.Format("{0}", reader["Nom"]));
-                    return "existe";
+                    if (reader.Read())
+                    {
+                        Console.WriteLine("l'utilisateur est déjà présent !");
+                        Console.WriteLine(String.Format("{0}", reader["Nom"]));
+                        return "existe";
+                    }
                 }
-               
+
                 return "Existe pas !";
             }
         }
 
-
         [HttpPost("userInsert")]
-        public void test([FromBody] User myObject)
+        public void InsertUser([FromBody] User myObject)
         {
-            string connection = "server=127.0.0.1;user=root;database=test;password=";
-            myConnection = new MySqlConnection(connection);
-            myConnection.Open();
-            var id = myObject.ID;
+            _myConnection = new MySqlConnection(_connectionString);
+            _myConnection.Open();
             var name = myObject.Name;
             var email = myObject.Email;
-            string sql = "INSERT INTO matable (Nom,Age) VALUES (@nom,@email);";
-            using (MySqlCommand command = new MySqlCommand(sql, myConnection))
+
+            string sql = "INSERT INTO matable (Nom, Age) VALUES (@nom, @email);";
+            using (MySqlCommand command = new MySqlCommand(sql, _myConnection))
             {
-                //command.Parameters.AddWithValue("@id",3);
                 command.Parameters.AddWithValue("@nom", name);
                 command.Parameters.AddWithValue("@email", email);
-
                 command.ExecuteNonQuery();
                 Console.WriteLine("Table créée avec succès !");
             }
         }
 
+        [HttpPost("session")]
+        public void SetSessionValue([FromBody] User myObject)
+        {
+            var httpContext = HttpContext;
+            var pseudo = myObject.Name;
+            if (_sharedSession == null)
+            {
+                _sharedSession = httpContext.Session;
+                _sharedSession.SetString("userLoggedIn", pseudo);
+            }
+
+          
+        }
+
+        [HttpGet("test-session")]
+        public string GetSessionValue()
+        {
+            if (_sharedSession != null)
+            {
+                Console.WriteLine("La session : " + _sharedSession.GetString("userLoggedIn"));
+            }
+
+            return _sharedSession?.GetString("userLoggedIn") ?? "pas de session !";
+        }
     }
 }

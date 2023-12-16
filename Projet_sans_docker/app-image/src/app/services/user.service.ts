@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { User } from '../modules/User';
+import { catchError, map, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,11 @@ export class UserService {
 
   }
   public createTable(){
-    return this.http.get('https://localhost:56338/api/Test');
+    return this.http.get('https://localhost:7289/api/Test');
   }
     public insertTable(pseudo:string){
       const myData = { id: '1', name: pseudo,email:"12"};
-    return  this.http.post("https://localhost:56075/api/User/userInsert", myData);
+    return  this.http.post("https://localhost:7289/api/User/userInsert", myData);
    }
   public getUser(): Observable<User[]> {
     return this.http.get<User[]>('https://localhost:7289/api/User',{
@@ -33,8 +34,29 @@ export class UserService {
   public checkUserExists(pseudo:string) {
 
     const myData = { id: '1', name: pseudo ,email:"12"};
-    return  this.http.post("https://localhost:56075/api/User/userSelect", myData,{responseType: 'text'});
+    return  this.http.post("https://localhost:7289/api/User/userSelect", myData,{responseType: 'text'});
 }
   
+//  getSession(): Observable<string> {
+//   return this.http.post<string>('https://localhost:7289/api/User/get-session-pseudo', { responseType: 'text' })
+//   .pipe(
+//     map(response => response), // Utilisez map pour traiter la réponse
+//     catchError(error => {
+//       console.error('Error getting session:', error);
+//       return throwError(error);
+//     })
+//   );
+// }
+
+setSessionPseudo(pseudo:string) {
+  const myData = { id: '1', name: pseudo ,email:"12"};
+  return this.http.post("https://localhost:7289/api/User/session", myData);
+}
+
+getSessionPseudo() {
+  return this.http.get('https://localhost:7289/api/User/test-session',{responseType: 'text'});
+}
+
+
 
 }

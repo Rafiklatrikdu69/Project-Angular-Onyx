@@ -22,15 +22,24 @@ form:any={
   }
   
   onSubmit() :void{
- 
+    // this.userService.setSession().subscribe();
     if(this.form.pseudo!=undefined){
-      console.log(this.form.pseudo);
-        console.log("on va tester");
-
+   
         this.userService.checkUserExists(this.form.pseudo).subscribe(data=>{
           console.log(data)
           if(data=="Existe pas !"){
+          
+          
+       
             this.userService.insertTable(this.form.pseudo).subscribe();
+           
+            
+
+          }else{
+
+             
+              alert("Ce pseudo est deja utiliser !");
+              
           }
         }
           );
@@ -38,9 +47,21 @@ form:any={
   
   }
   
+  
+
+  // getSession(): void {
+  //   this.userService.getSession().subscribe(response => {
+  //     console.log('Valeur de session :', response);
+  //   });
+  // }
+ngAfterContentInit(): void {
+  //Called after ngOnInit when the component's or directive's content has been initialized.
+  //Add 'implements AfterContentInit' to the class.
+
+
+  
+}
   ngOnInit() {
-    
-   
     
       //console.log(data) 
       
