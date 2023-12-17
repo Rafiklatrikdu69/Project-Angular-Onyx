@@ -17,7 +17,7 @@ export class UserService {
     return this.http.get('https://localhost:7289/api/Test');
   }
     public insertTable(pseudo:string){
-      const myData = { id: '1', name: pseudo,email:"12"};
+      const myData = { id: '1', pseudo: pseudo};
     return  this.http.post("https://localhost:7289/api/User/userInsert", myData);
    }
   public getUser(): Observable<User[]> {
@@ -33,7 +33,7 @@ export class UserService {
 
   public checkUserExists(pseudo:string) {
 
-    const myData = { id: '1', name: pseudo ,email:"12"};
+    const myData = { id: '1', pseudo: pseudo };
     return  this.http.post("https://localhost:7289/api/User/userSelect", myData,{responseType: 'text'});
 }
   public getNbClick(){
@@ -51,12 +51,15 @@ export class UserService {
 // }
 
 setSessionPseudo(pseudo:string) {
-  const myData = { id: '1', name: pseudo ,email:"12"};
+  const myData = { id: '1', pseudo: pseudo};
   return this.http.post("https://localhost:7289/api/User/session", myData);
 }
 
 getSessionPseudo() {
   return this.http.get('https://localhost:7289/api/User/test-session',{responseType: 'text'});
+}
+public deconnexion(){
+  return this.http.delete('https://localhost:7289/api/User/deconnexion');
 }
 
 
