@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../modules/core-app-image/services/user.service';
 import { Route, Router } from '@angular/router';
 
 

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { timeout } from 'rxjs';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../modules/core-app-image/services/user.service';
 import { Router } from '@angular/router';
 
 @Component({
