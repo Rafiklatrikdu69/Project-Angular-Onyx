@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
+using System.Net.Http;
 namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
@@ -20,7 +21,7 @@ namespace WebApplication1.Controllers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private static ISession _sharedSession;
-        private readonly string _connectionString = "server=127.0.0.1;user=root;database=test;password=";
+        private readonly string _connectionString = "server=127.0.0.1;user=root;database=Onyx;password=";
         private MySqlConnection _myConnection;
 
         public UserController(IHttpContextAccessor httpContextAccessor)
@@ -36,14 +37,14 @@ namespace WebApplication1.Controllers
                 new User
                 {
                     ID = 1223213,
-                    Name = "Rafik",
-                    Email = "raffraff721@gmail.com"
+                    pseudo = "Rafik",
+                  
                 },
                 new User
                 {
                     ID = 13,
-                    Name = "Ramazan",
-                    Email = "ramazan12@gmail.com"
+                    pseudo = "Ramazan",
+                   
                 }
             };
         }
@@ -53,7 +54,7 @@ namespace WebApplication1.Controllers
         {
             _myConnection = new MySqlConnection(_connectionString);
             _myConnection.Open();
-            string sql = "INSERT INTO `matable` (Nom, Age) VALUES ('Rafik', 124);";
+            string sql = "INSERT INTO `utilisateur` (pseudo) VALUES ('Rafik');";
             using (MySqlCommand command = new MySqlCommand(sql, _myConnection))
             {
                 command.ExecuteNonQuery();
@@ -66,18 +67,18 @@ namespace WebApplication1.Controllers
         {
             _myConnection = new MySqlConnection(_connectionString);
             _myConnection.Open();
-            var name = myObject.Name;
+            var name = myObject.pseudo;
 
-            string sql = "SELECT Nom from matable WHERE Nom=@nom;";
+            string sql = "SELECT pseudo from utilisateur WHERE pseudo=@pseudo;";
             using (MySqlCommand command = new MySqlCommand(sql, _myConnection))
             {
-                command.Parameters.AddWithValue("@nom", name);
+                command.Parameters.AddWithValue("@pseudo", name);
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
                         Console.WriteLine("l'utilisateur est déjà présent !");
-                        Console.WriteLine(String.Format("{0}", reader["Nom"]));
+                        Console.WriteLine(String.Format("{0}", reader["pseudo"]));
                         return "existe";
                     }
                 }
@@ -91,14 +92,14 @@ namespace WebApplication1.Controllers
         {
             _myConnection = new MySqlConnection(_connectionString);
             _myConnection.Open();
-            var name = myObject.Name;
-            var email = myObject.Email;
+            var name = myObject.pseudo;
+           // var email = myObject.Email;
 
-            string sql = "INSERT INTO matable (Nom, Age) VALUES (@nom, @email);";
+            string sql = "INSERT INTO utilisateur (pseudo) VALUES (@pseudo);";
             using (MySqlCommand command = new MySqlCommand(sql, _myConnection))
             {
-                command.Parameters.AddWithValue("@nom", name);
-                command.Parameters.AddWithValue("@email", email);
+                command.Parameters.AddWithValue("@pseudo", name);
+              //  command.Parameters.AddWithValue("@email", email);
                 command.ExecuteNonQuery();
                 Console.WriteLine("Table créée avec succès !");
             }
@@ -108,19 +109,20 @@ namespace WebApplication1.Controllers
         public void SetSessionValue([FromBody] User myObject)
         {
             var httpContext = HttpContext;
-            var pseudo = myObject.Name;
-            if (_sharedSession == null)
-            {
+            var pseudo = myObject.pseudo;
+            
                 _sharedSession = httpContext.Session;
-                _sharedSession.SetString("userLoggedIn", pseudo);
+                _sharedSession.SetString("pseudo", pseudo);
        
-            }
+            
 
           
         }
-        [HttpPost("deconnexion")]
+        [HttpDelete("deconnexion")]
         public void deconnexion()
         {
+            var httpContext = HttpContext;
+            _sharedSession = httpContext.Session;
             _sharedSession.Remove("pseudo");
 
         }
@@ -129,10 +131,10 @@ namespace WebApplication1.Controllers
         {
             if (_sharedSession != null)
             {
-                Console.WriteLine("La session : " + _sharedSession.GetString("userLoggedIn"));
+                Console.WriteLine("La session : " + _sharedSession.GetString("pseudo"));
             }
 
-            return _sharedSession?.GetString("userLoggedIn") ?? "pas de session !";
+            return _sharedSession?.GetString("pseudo") ?? "pas de session !";
         }
 
         [HttpGet("json")]
