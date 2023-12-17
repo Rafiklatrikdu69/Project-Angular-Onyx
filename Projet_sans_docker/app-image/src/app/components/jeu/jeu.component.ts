@@ -79,7 +79,7 @@ export class JeuComponent {
       if (this.nbClick % 2 === 0) {
         this.tab.push("les heures "+this.hr+" "+"les min "+this.min+" "+" "+"les secondes "+this.sec+" "+"les ms "+this.ms)
         this.resetTimer()
-        this.stop();
+        //this.stop();
   
         this.randomNumber = Math.floor(Math.random() * this.myPix.length);
         let img = document.getElementById('img');
