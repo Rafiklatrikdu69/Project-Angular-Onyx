@@ -4,7 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using MySql.Data.MySqlClient;
 using WebApplication1.Models;
-
+using System.Text.Json;
+using System;
+using System.IO;
+using System.Text.Json;
+using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+using System.Runtime.InteropServices;
+using System.Security.Claims;
 namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
@@ -106,11 +113,17 @@ namespace WebApplication1.Controllers
             {
                 _sharedSession = httpContext.Session;
                 _sharedSession.SetString("userLoggedIn", pseudo);
+       
             }
 
           
         }
+        [HttpPost("deconnexion")]
+        public void deconnexion()
+        {
+            _sharedSession.Remove("pseudo");
 
+        }
         [HttpGet("test-session")]
         public string GetSessionValue()
         {
@@ -120,6 +133,20 @@ namespace WebApplication1.Controllers
             }
 
             return _sharedSession?.GetString("userLoggedIn") ?? "pas de session !";
+        }
+
+        [HttpGet("json")]
+        public int lectureFichier()
+        {
+            Console.WriteLine("Lecture du fichier : ");
+            using (StreamReader r = new StreamReader("C:\\Users\\Rafik\\Documents\\Project-Angular-Onyx\\Projet_sans_docker\\WebApplication1\\WebApplication1\\data.json"))
+            {
+                string json = r.ReadToEnd();
+                var data= JsonSerializer.Deserialize<DataJson>(json);
+                Console.WriteLine(data.nbClick);
+                return data.nbClick;
+            }
+
         }
     }
 }

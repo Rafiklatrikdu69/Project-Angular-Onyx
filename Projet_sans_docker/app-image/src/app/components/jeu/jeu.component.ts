@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { timeout } from 'rxjs';
 import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-jeu',
@@ -16,24 +17,35 @@ export class JeuComponent {
     'https://via.placeholder.com/350',
     'https://via.placeholder.com/400',
   ];
-  
+  nbClickMax=3;
+tabPositionImage=[0];
   randomNumber = Math.floor(Math.random() * this.myPix.length);
   tab=[''];
-  constructor(private userService:UserService){
+  constructor(private userService:UserService,private router:Router){
 
   }
   ngOnInit(): void {
+    this.userService.getNbClick().subscribe(data=>{
+      alert(data)
+      let n = data;
+      this.nbClickMax= Object.assign(n);
+    });
     this.userService.getSessionPseudo().subscribe(data=>{
       console.log(data)
       if(data==="pas de session !"){
         alert("il ya pas de session !")
+        this.router.navigate(['/app-form-connexion'])
       }
     });
     let img = document.getElementById('img');
     img?.setAttribute('src',this.myPix[this.randomNumber]); 
     img!.style.position = 'absolute';
-     img!.style.top = document.body.clientHeight * Math.random() + 'px';
-     img!.style.left = document.body.clientWidth * Math.random() + 'px';
+   if(!this.tabPositionImage.includes(document.body.clientHeight * Math.random()+document.body.clientWidth * Math.random())){
+    img!.style.top = document.body.clientHeight * Math.random() + 'px';
+    img!.style.left = document.body.clientWidth * Math.random() + 'px';
+    this.tabPositionImage.push(document.body.clientHeight * Math.random()+document.body.clientWidth * Math.random())
+    }
+  
     
 
   }
@@ -44,12 +56,17 @@ export class JeuComponent {
   startTimer: any;
   running = false;
   nbClick = 0;
-
-  
+  previousClickTime = Date.now();
+  partieTerminer = false;
   start() {
+    
     this.nbClick++;
-  
+    if(this.nbClick==this.nbClickMax){
+     this.partieTerminer = true;
+      alert("Terminer !")
+    }   
     if (!this.running) {
+      this.previousClickTime = Date.now();
       this.running = true;
       this.randomNumber = Math.floor(Math.random() * this.myPix.length);
       let img = document.getElementById('img');
@@ -76,20 +93,27 @@ export class JeuComponent {
         }
       }, 10);
     } else {
-      if (this.nbClick % 2 === 0) {
-        this.tab.push("les heures "+this.hr+" "+"les min "+this.min+" "+" "+"les secondes "+this.sec+" "+"les ms "+this.ms)
-        this.resetTimer()
-        //this.stop();
+
+      const currentTime =  Date.now();
+      const timeDifference = currentTime - this.previousClickTime;
+      this.tab.push(`Temps entre les clics : ${timeDifference} ms`);
+      this.resetTimer();
+
+
   
-        this.randomNumber = Math.floor(Math.random() * this.myPix.length);
-        let img = document.getElementById('img');
-        img?.setAttribute('src', this.image());
-        img!.style.position = 'absolute';
+      this.randomNumber = Math.floor(Math.random() * this.myPix.length);
+      let img = document.getElementById('img');
+      img?.setAttribute('src', this.image());
+      img!.style.position = 'absolute';
+      if(!this.tabPositionImage.includes(document.body.clientHeight * Math.random()+document.body.clientWidth * Math.random())){
         img!.style.top = document.body.clientHeight * Math.random() + 'px';
         img!.style.left = document.body.clientWidth * Math.random() + 'px';
-       
-      }
+        this.tabPositionImage.push(document.body.clientHeight * Math.random()+document.body.clientWidth * Math.random())
+        }
+      this.previousClickTime = currentTime;
+    
     }
+    
   }
   
   stop() {
@@ -98,6 +122,8 @@ export class JeuComponent {
   }
   
   image(){
+   
+  //  delete this.myPix[this.randomNumber];
     const nextImage = this.myPix.shift(); 
     this.myPix.push(""+nextImage); 
     return nextImage || ''; 

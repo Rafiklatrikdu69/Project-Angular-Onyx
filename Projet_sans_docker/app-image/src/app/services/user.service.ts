@@ -36,7 +36,9 @@ export class UserService {
     const myData = { id: '1', name: pseudo ,email:"12"};
     return  this.http.post("https://localhost:7289/api/User/userSelect", myData,{responseType: 'text'});
 }
-  
+  public getNbClick(){
+    return this.http.get("https://localhost:7289/api/User/json");
+  }
 //  getSession(): Observable<string> {
 //   return this.http.post<string>('https://localhost:7289/api/User/get-session-pseudo', { responseType: 'text' })
 //   .pipe(
