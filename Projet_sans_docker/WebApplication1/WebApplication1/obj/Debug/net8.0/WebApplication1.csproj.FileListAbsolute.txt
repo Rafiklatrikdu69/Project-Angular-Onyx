@@ -112,3 +112,4 @@ C:\Users\Rafik\Documents\Project-Angular-Onyx\Projet_sans_docker\WebApplication1
 C:\Users\Rafik\Documents\Project-Angular-Onyx\Projet_sans_docker\WebApplication1\WebApplication1\obj\Debug\net8.0\WebApplication1.pdb
 C:\Users\Rafik\Documents\Project-Angular-Onyx\Projet_sans_docker\WebApplication1\WebApplication1\obj\Debug\net8.0\WebApplication1.genruntimeconfig.cache
 C:\Users\Rafik\Documents\Project-Angular-Onyx\Projet_sans_docker\WebApplication1\WebApplication1\obj\Debug\net8.0\ref\WebApplication1.dll
+C:\Users\Rafik\Documents\Project-Angular-Onyx\Projet_sans_docker\WebApplication1\WebApplication1\bin\Debug\net8.0\data.json
