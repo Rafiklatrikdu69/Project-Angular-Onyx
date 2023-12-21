@@ -13,21 +13,19 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Net.Http;
+using WebApplication1.classes;
 namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private static ISession _sharedSession;
-        private readonly string _connectionString = "server=127.0.0.1;user=root;database=Onyx;password=";
+   
+        private static ISession sessionStatic;//declaration de la session en static 
+        private readonly string _connectionString = "server=127.0.0.1;user=root;database=Onyx;password=";//connexion a la bd -> plus tard mise en place du singleton
         private MySqlConnection _myConnection;
 
-        public UserController(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
-        }
+       
 
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetUsers()
@@ -52,6 +50,7 @@ namespace WebApplication1.Controllers
         [HttpGet("insert")]
         public void CreateUser()
         {
+            //Singleton.Instance();
             _myConnection = new MySqlConnection(_connectionString);
             _myConnection.Open();
             string sql = "INSERT INTO `utilisateur` (pseudo) VALUES ('Rafik');";
@@ -61,18 +60,22 @@ namespace WebApplication1.Controllers
                 Console.WriteLine("Table créée avec succès !");
             }
         }
-
+        /// <summary>
+        /// Cette methode selectionne l'utilisateur dans la BD 
+        /// </summary>
+        /// <param name="myObject"></param>
+        /// <returns></returns>
         [HttpPost("userSelect")]
         public string VerifyUtilisateur([FromBody] User myObject)
         {
             _myConnection = new MySqlConnection(_connectionString);
             _myConnection.Open();
-            var name = myObject.pseudo;
+            var pseudo = myObject.pseudo;
 
             string sql = "SELECT pseudo from utilisateur WHERE pseudo=@pseudo;";
             using (MySqlCommand command = new MySqlCommand(sql, _myConnection))
             {
-                command.Parameters.AddWithValue("@pseudo", name);
+                command.Parameters.AddWithValue("@pseudo", pseudo);
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
@@ -86,57 +89,75 @@ namespace WebApplication1.Controllers
                 return "Existe pas !";
             }
         }
-
+        /// <summary>
+        /// Cette methode insert l'utilisateur dans la bd 
+        /// </summary>
+        /// <param name="myObject"></param>
         [HttpPost("userInsert")]
         public void InsertUser([FromBody] User myObject)
         {
             _myConnection = new MySqlConnection(_connectionString);
             _myConnection.Open();
-            var name = myObject.pseudo;
-           // var email = myObject.Email;
-
+            var pseudo = myObject.pseudo;
+          
             string sql = "INSERT INTO utilisateur (pseudo) VALUES (@pseudo);";
             using (MySqlCommand command = new MySqlCommand(sql, _myConnection))
             {
-                command.Parameters.AddWithValue("@pseudo", name);
-              //  command.Parameters.AddWithValue("@email", email);
+                command.Parameters.AddWithValue("@pseudo", pseudo);
+          
                 command.ExecuteNonQuery();
                 Console.WriteLine("Table créée avec succès !");
             }
         }
 
+        /// <summary>
+        /// Cette methode initialise la session 
+        /// </summary>
+        /// <param name="myObject"></param>
         [HttpPost("session")]
         public void SetSessionValue([FromBody] User myObject)
         {
             var httpContext = HttpContext;
             var pseudo = myObject.pseudo;
-            
-                _sharedSession = httpContext.Session;
-                _sharedSession.SetString("pseudo", pseudo);
+
+            sessionStatic = httpContext.Session;
+            sessionStatic.SetString("pseudo", pseudo);
        
             
 
           
         }
+        /// <summary>
+        /// Cette methode detruit la session pour la deconnexion
+        /// </summary>
         [HttpDelete("deconnexion")]
         public void deconnexion()
         {
             var httpContext = HttpContext;
-            _sharedSession = httpContext.Session;
-            _sharedSession.Remove("pseudo");
+            sessionStatic = httpContext.Session;
+            sessionStatic.Remove("pseudo");
 
         }
+        /// <summary>
+        /// Cette methode permet de recuperer la session actuel afin de verifier si l'utilisteur 
+        /// est bien connecter 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("test-session")]
         public string GetSessionValue()
         {
-            if (_sharedSession != null)
+            if (sessionStatic != null)
             {
-                Console.WriteLine("La session : " + _sharedSession.GetString("pseudo"));
+                Console.WriteLine("La session : " + sessionStatic.GetString("pseudo"));
             }
 
-            return _sharedSession?.GetString("pseudo") ?? "pas de session !";
+            return sessionStatic?.GetString("pseudo") ?? "pas de session !";
         }
-
+        /// <summary>
+        /// Cette methode permet de  lire le fichier Json et le traduit sous forme de 
+        /// chaine de caractere ou de integer suivant le type de la classe DataJson
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("json")]
         public int lectureFichier()
         {

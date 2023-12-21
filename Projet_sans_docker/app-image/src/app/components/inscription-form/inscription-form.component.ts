@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Form, FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../modules/core-app-image/services/user.service';
 
 @Component({
   selector: 'app-inscription-form',

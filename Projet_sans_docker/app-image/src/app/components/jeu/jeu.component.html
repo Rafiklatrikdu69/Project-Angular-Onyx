@@ -3,6 +3,8 @@
  <div>
     <img id="img" (click)="start()">
 </div> 
+<button *ngIf="this.partieTerminer" ><a [routerLink]="[ '/app-jeu']">Terminer</a></button>
+<button (click)="reloadCurrent()">Reload Current Route</button>
 
 <span>{{hr}}:</span>
 <span>{{min}}:</span>
