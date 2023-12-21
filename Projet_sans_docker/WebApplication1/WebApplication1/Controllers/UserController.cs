@@ -13,6 +13,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Net.Http;
+using WebApplication1.classes;
 namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
@@ -49,6 +50,7 @@ namespace WebApplication1.Controllers
         [HttpGet("insert")]
         public void CreateUser()
         {
+            //Singleton.Instance();
             _myConnection = new MySqlConnection(_connectionString);
             _myConnection.Open();
             string sql = "INSERT INTO `utilisateur` (pseudo) VALUES ('Rafik');";
