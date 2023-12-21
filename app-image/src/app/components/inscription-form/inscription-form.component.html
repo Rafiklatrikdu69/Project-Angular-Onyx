@@ -1,8 +1,10 @@
-
-<form action="">
+<!-- [FormGroup]="checkoutForm"  -->
+<form #f ="ngForm" name="form" (ngSubmit)="f.form.valid && onSubmit()">
+    <div>Votre Pseudo : {{form.pseudo}}</div>
     <label>Pseudo</label>
-    <input class="btn-primary" type="text">
-
+    <input class="btn-primary" type="text" name="pseudo" [(ngModel)]="form.pseudo" #pseudo ="ngModel" required>
+    <div class="form-error" *ngIf="pseudo.errors && f.submitted">Pseudo requis !</div>
+    <input class="btn-donate" type="submit" value="Valider">
 </form>
 
-<button class="btn-donate">Valider</button> 
+
