@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Click } from '../models/Click';
 
 @Injectable({
   providedIn: 'root'
@@ -13,4 +15,8 @@ export class GameService {
     
     return  this.http.post("https://localhost:7289/api/Game/partie",data,{responseType:"text"})
   }
+
+   public getAllClick():Observable<Click[]>{
+      return this.http.get<Click[]>("")
+   }
 }
