@@ -4,6 +4,8 @@ import { timeout } from 'rxjs';
 import { UserService } from '../../modules/core-app-image/services/user.service';
 import { Router } from '@angular/router';
 import { GameService } from '../../modules/core-app-image/services/game.service';
+import { Click } from '../../modules/core-app-image/models/Click';
+import { waitForDebugger } from 'node:inspector';
 
 @Component({
   selector: 'app-jeu',
@@ -24,7 +26,8 @@ export class JeuComponent {
   tabPositionImage=[0];
   randomNumber = Math.floor(Math.random() * this.myPix.length);
   tab=[''];
-  tabValeurChrono = [];
+  tabValeurChrono = []
+  tabClicks:Click[] = []
   session!:string
   constructor(private userService:UserService,private router:Router,private gameService:GameService){
     
@@ -69,6 +72,10 @@ export class JeuComponent {
   start() {
     
     this.nbClick++;
+    if(this.nbClick==1){
+      let c = new Click(12,this.nbClick,0);
+      this.tabClicks.push(c)
+    }
     if(this.nbClick==this.nbClickMax){
       this.partieTerminer = true;
       //alert("Terminer !")
@@ -83,7 +90,9 @@ export class JeuComponent {
       // this.stop();
       //   this.resetTimer();
       //   this.resetTab();
-      this.router.navigate(['/app-jeu']);
+      //this.router.navigate(['/app-jeu']);
+    this.gameService.insertInfoClick(this.tabClicks).subscribe()
+      this.reloadCurrent()
       // return;
     }   
     if (!this.running) {
@@ -118,9 +127,15 @@ export class JeuComponent {
       const timeDifference = currentTime - this.previousClickTime;
       
       this.tab.push(`Temps entre les clics : ${timeDifference} ms`);
+      let c = new Click(12,this.nbClick,timeDifference);
+      //alert("Numero de click"+c.numClick)
+      this.tabClicks.push(c);
       this.tabValMeilleurChrono.push(timeDifference)
       this.resetTimer();
-      this.randomNumber = Math.floor(Math.random() * this.myPix.length);
+
+      
+      this.randomNumber = Math.floor(Math.random() * this.myPix.length)
+
       let img = document.getElementById('img');
       img?.setAttribute('src', this.image());
       img!.style.position = 'absolute';
@@ -166,6 +181,6 @@ export class JeuComponent {
     })
   }
   reloadCurrent(){
-    this.reloadComponent(true);
+    this.reloadComponent(false,"affichage-score-partie");
   }
 }
