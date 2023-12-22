@@ -17,6 +17,7 @@ using System.Reflection;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+778fdae9c230486faab656d22f210a217988b2a9")]
 =======
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b796e774073ebe5cca895179704276e679a6124d")]
@@ -26,6 +27,9 @@ using System.Reflection;
 >>>>>>> back-end
 =======
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c2d8e9b1c02851e90b342c405ee83f3573e2da9e")]
+>>>>>>> back-end
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+356f71a0b71b2ecc451e2e61b0ee3733baa85a4e")]
 >>>>>>> back-end
 [assembly: System.Reflection.AssemblyProductAttribute("WebApplication1")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebApplication1")]

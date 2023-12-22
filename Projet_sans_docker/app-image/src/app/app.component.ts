@@ -21,7 +21,6 @@ export class AppComponent {
       console.log(this.users);
     });
 
-//this.userService.insertTable().subscribe();
     
   }
   
