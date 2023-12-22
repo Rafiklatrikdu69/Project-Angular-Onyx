@@ -128,7 +128,7 @@ namespace WebApplication1.Controllers
 
 
             //string sql = "INSERT INTO gamed (numPartie,numClick,valClickchrono);";
-            string sql = "SELECT * FROM gameh where dateHeure = (SELECT max(dateHeure) FROM gameh);";
+            string sql = "SELECT * FROM gameh where dateHeure = (SELECT dateHeure FROM gameh ORDER BY dateHeure DESC LIMIT 1);";
             var idPartie = 0;
             using (MySqlCommand command = new MySqlCommand(sql, _myConnection))
             {

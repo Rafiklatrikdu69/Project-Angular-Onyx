@@ -5,6 +5,7 @@ import { UserService } from '../../modules/core-app-image/services/user.service'
 import { Router } from '@angular/router';
 import { GameService } from '../../modules/core-app-image/services/game.service';
 import { Click } from '../../modules/core-app-image/models/Click';
+import { waitForDebugger } from 'node:inspector';
 
 @Component({
   selector: 'app-jeu',
@@ -90,7 +91,7 @@ export class JeuComponent {
       //   this.resetTimer();
       //   this.resetTab();
       //this.router.navigate(['/app-jeu']);
-      this.gameService.insertInfoClick(this.tabClicks).subscribe()
+    this.gameService.insertInfoClick(this.tabClicks).subscribe()
       this.reloadCurrent()
       // return;
     }   
@@ -129,7 +130,7 @@ export class JeuComponent {
       
       this.tab.push(`Temps entre les clics : ${timeDifference} ms`);
       let c = new Click(12,this.nbClick,timeDifference);
-      alert("Numero de click"+c.numClick)
+      //alert("Numero de click"+c.numClick)
       this.tabClicks.push(c);
       this.tabValMeilleurChrono.push(timeDifference)
       this.resetTimer();
