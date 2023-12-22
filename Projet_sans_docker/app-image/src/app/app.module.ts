@@ -14,6 +14,7 @@ import { InscriptionFormComponent } from './components/inscription-form/inscript
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JeuComponent } from './components/jeu/jeu.component';
 import { AffichageScoreComponent } from './components/affichage-score/affichage-score.component';
+import { AffichageScorePartieComponent } from './components/affichage-score-partie/affichage-score-partie.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AffichageScoreComponent } from './components/affichage-score/affichage-
     HomeComponent,
     InscriptionFormComponent,
     JeuComponent,
-    AffichageScoreComponent
+    AffichageScoreComponent,
+    AffichageScorePartieComponent
   ],
   imports: [
     
