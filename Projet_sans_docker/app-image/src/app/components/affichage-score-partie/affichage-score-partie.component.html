@@ -1,11 +1,26 @@
+<table>
+    <caption>Informations sur le click</caption>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Temps des clicks</th>
+    
+      <tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let card of pageSlice">
+        <th>Click numéro {{ card.numClick }}</th>
+        <td>{{ card.valClickChrono }} ms </td>
+      </tr>
+    
+    </tbody>
+  </table>
+
+
 <div>
-    <div *ngFor="let card of pageSlice">
-        <div>Header</div>
-        <div>{{ card.cardNumber }}</div>
-      </div>
       
       <mat-paginator
-      [length]="this.cardsItems.length"
+      [length]="this.clicks.length"
       [pageSize]="3"
       [PageSizeOptions]="[3,6,9]"
     (page)="OnPageChange($event)"

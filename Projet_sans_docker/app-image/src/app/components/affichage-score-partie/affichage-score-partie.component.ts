@@ -9,12 +9,12 @@ import { PageEvent } from '@angular/material/paginator';
   styleUrl: './affichage-score-partie.component.scss'
 })
 export class AffichageScorePartieComponent {
-  public cardsItems = [{cardNumber:1},{cardNumber:12},{cardNumber:24},{cardNumber:126},{cardNumber:45},{cardNumber:32},{cardNumber:1},{cardNumber:12},{cardNumber:24},{cardNumber:126},{cardNumber:45},{cardNumber:32},{cardNumber:1},{cardNumber:12},{cardNumber:24},{cardNumber:126},{cardNumber:45},{cardNumber:32}]
-  public pageSlice = this.cardsItems.slice(0,3);
-  constructor(private gameService:GameService){}
   clicks:Click[]=[];
+  public cardsItems = [{cardNumber:1},{cardNumber:12},{cardNumber:24},{cardNumber:126},{cardNumber:45},{cardNumber:32},{cardNumber:1},{cardNumber:12},{cardNumber:24},{cardNumber:126},{cardNumber:45},{cardNumber:32},{cardNumber:1},{cardNumber:12},{cardNumber:24},{cardNumber:126},{cardNumber:45},{cardNumber:32}]
+  public pageSlice = this.clicks.slice(0,3);
+  constructor(private gameService:GameService){}
+ 
   ngOnInit(): void {
-    alert("Debut !")
     console.log("debut !");
     this.gameService.getAllClick().subscribe((result:Click[])=>{
       this.clicks=result;
@@ -32,10 +32,10 @@ export class AffichageScorePartieComponent {
     
      const   debut = event.pageIndex * event.pageSize;
      let finIndex = debut + event.pageSize;
-     if(finIndex > this.cardsItems.length){
-       finIndex = this.cardsItems.length;
+     if(finIndex > this.clicks.length){
+       finIndex = this.clicks.length;
      }
-        this.pageSlice =   this.cardsItems.slice(debut,finIndex)
+        this.pageSlice =   this.clicks.slice(debut,finIndex)
 
      }
   
