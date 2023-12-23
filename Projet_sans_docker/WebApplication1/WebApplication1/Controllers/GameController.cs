@@ -45,19 +45,19 @@ namespace WebApplication1.Controllers
             _myConnection = new MySqlConnection(_connectionString);
             _myConnection.Open();
             var idPartie = 0;
-      
-         
+
+
             // Console.WriteLine("La date de la partie : "+date);
-            string sql = "SELECT * FROM gameh where dateHeure = (SELECT max(dateHeure) FROM gameh);";
+            string sql = "SELECT * FROM gameh where dateHeure = (SELECT dateHeure FROM gameh ORDER BY dateHeure DESC LIMIT 1);";
             using (MySqlCommand command = new MySqlCommand(sql, _myConnection))
             {
-             
+
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
                         idPartie = Convert.ToInt32(reader["numPartie"]);
-                        Console.WriteLine("le numero de la partie : " + idPartie); 
+                        Console.WriteLine("le numero de la partie : " + idPartie);
                     }
                 }
             }
@@ -85,7 +85,7 @@ namespace WebApplication1.Controllers
 
 
             }
-            
+
             if (listGame.Count > 0)
             {
                 for (int i = 0; i < listGame.Count; i++)
@@ -108,7 +108,7 @@ namespace WebApplication1.Controllers
             //    }
             //};
             return null;
-            
+
 
 
         }
@@ -117,13 +117,13 @@ namespace WebApplication1.Controllers
         public void insertInfoClicks([FromBody] ClickPartie[] click)
         {
 
-            
-           
-                        _myConnection = new MySqlConnection(_connectionString);
+
+
+            _myConnection = new MySqlConnection(_connectionString);
             _myConnection.Open();
-            for (int i = 0;i< click.Length; i++)
+            for (int i = 0; i < click.Length; i++)
             {
-                Console.WriteLine("Info sur le clique :"+click[i].numPartie);
+                Console.WriteLine("Info sur le clique :" + click[i].numPartie);
             }
 
 
@@ -155,7 +155,15 @@ namespace WebApplication1.Controllers
                 }
             }
         }
+        //requete pour recuperer les parties du joueur avec son nom
+        public List<Game> getPartieJoueurBypSeudo([FromBody] User pseudo) {
+            List<Game> listePartie = new List<Game>();
+            _myConnection = new MySqlConnection(_connectionString);
+            _myConnection.Open();
+            return listePartie;
+        
+        }
 
-       
+
     }
 }
