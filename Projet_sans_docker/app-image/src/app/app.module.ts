@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-
+import { CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -15,7 +15,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JeuComponent } from './components/jeu/jeu.component';
 import { AffichageScoreComponent } from './components/affichage-score/affichage-score.component';
 import { AffichageScorePartieComponent } from './components/affichage-score-partie/affichage-score-partie.component';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatPaginatorModule } from '@angular/material/paginator';
 @NgModule({
   declarations: [
     
@@ -29,14 +31,17 @@ import { AffichageScorePartieComponent } from './components/affichage-score-part
     AffichageScorePartieComponent
   ],
   imports: [
-    
+    MatPaginatorModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserModule,
+    MatSlideToggleModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule
   ],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA],
   providers: [],
   bootstrap: [AppComponent]
 })

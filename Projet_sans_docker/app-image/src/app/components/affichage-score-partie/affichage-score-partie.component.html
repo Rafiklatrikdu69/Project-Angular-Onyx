@@ -1,0 +1,24 @@
+<div>
+    <div *ngFor="let card of pageSlice">
+        <div>Header</div>
+        <div>{{ card.cardNumber }}</div>
+      </div>
+      
+      <mat-paginator
+      [length]="this.cardsItems.length"
+      [pageSize]="3"
+      [PageSizeOptions]="[3,6,9]"
+    (page)="OnPageChange($event)"
+    ></mat-paginator>
+    
+
+<!--  
+ <mat-paginator 
+               [length]="this.cardsItems.length" 
+               [pageSize]="1" 
+               [pageSizeOptions]="[3,6,9]"
+               (page)="OnPageChange($event)">
+               
+</mat-paginator>  -->
+</div>
+<!-- <mat-slide-toggle>Toggle me!</mat-slide-toggle> -->
