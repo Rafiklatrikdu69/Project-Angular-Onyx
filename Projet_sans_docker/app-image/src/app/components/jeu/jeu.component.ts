@@ -35,7 +35,7 @@ export class JeuComponent {
   ngOnInit(): void {
     
     this.userService.getNbClick().subscribe(data=>{
-      alert(data)
+     
       let n = data;
       this.nbClickMax= Object.assign(n);
     });
@@ -78,22 +78,17 @@ export class JeuComponent {
     }
     if(this.nbClick==this.nbClickMax){
       this.partieTerminer = true;
-      //alert("Terminer !")
+
       const currentDate = new Date();
       const formattedDate = currentDate.toISOString().slice(0, 19).replace("T", " ");
       this.stop();
-      alert("terminer")
-      //alert(formattedDate)
       const sumVal = this.tabValMeilleurChrono.reduce((accumulator, curr) => accumulator + curr, 0);
       const avgVal = sumVal / this.tabValMeilleurChrono.length;
       this.gameService.insertDataPartie(this.session,Math.min(...this.tabValMeilleurChrono),avgVal, formattedDate).subscribe();
-      // this.stop();
-      //   this.resetTimer();
-      //   this.resetTab();
-      //this.router.navigate(['/app-jeu']);
+      
     this.gameService.insertInfoClick(this.tabClicks).subscribe()
       this.reloadCurrent()
-      // return;
+     
     }   
     if (!this.running) {
       this.previousClickTime = Date.now();
@@ -128,7 +123,7 @@ export class JeuComponent {
       
       this.tab.push(`Temps entre les clics : ${timeDifference} ms`);
       let c = new Click(12,this.nbClick,timeDifference);
-      //alert("Numero de click"+c.numClick)
+  
       this.tabClicks.push(c);
       this.tabValMeilleurChrono.push(timeDifference)
       this.resetTimer();
