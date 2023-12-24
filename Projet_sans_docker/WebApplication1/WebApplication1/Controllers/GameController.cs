@@ -156,10 +156,30 @@ namespace WebApplication1.Controllers
             }
         }
         //requete pour recuperer les parties du joueur avec son nom
+        [HttpGet("getPartiesJoueur")]
         public List<Game> getPartieJoueurBypSeudo([FromBody] User pseudo) {
             List<Game> listePartie = new List<Game>();
             _myConnection = new MySqlConnection(_connectionString);
             _myConnection.Open();
+            var chrono = 0;
+            var pseudoJoueur = pseudo.pseudo;
+            string sql = "SELECT valMoyenneChrono WHERE pseudo = @pseudo ORDER BY dateHeure DESC LIMIT 1";
+            using (MySqlCommand command = new MySqlCommand(sql, _myConnection))
+            {
+                command.Parameters.AddWithValue("@pseudo", pseudoJoueur);
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        chrono= Convert.ToInt32(reader["valMoyenneChrono"]);
+                        Console.WriteLine("La valeur moyenne du chrono est : "+chrono);
+                    }
+                }
+                //command.ExecuteNonQuery ();
+
+            }
+
+
             return listePartie;
         
         }

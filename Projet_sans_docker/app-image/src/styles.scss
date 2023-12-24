@@ -38,7 +38,7 @@ $bg-color: #424242;
 $hl-color: #2196F3;
 $muted-color: mix(white, $bg-color, 70%);
 $trans-time: 300ms;
-$width: 320px;
+$width: 500px;
 body{
     background-image:  linear-gradient(325deg, hsla(194 100% 69% / 1) 0%, hsla(217 100% 56% / 1) 55%,  hsla(194 100% 69% / 1) 90%);
     background-repeat: no-repeat;
@@ -56,9 +56,8 @@ body{
 }
 .div button{
     height: 50;
-    width: 100px;
+    width: 80px;
 }
-
 .btn-donate {
     --clr-font-main: hsla(0 0% 20% / 100);
     --btn-bg-1: hsla(194 100% 69% / 1);
@@ -67,7 +66,7 @@ body{
     --radii: 0.5em;
     cursor: pointer;
     padding: 0.9em 1.4em;
-    min-width: 200px;
+    min-width: 100px;
     min-height: 60px;
     font-size: var(--size, 1rem);
     font-family: "Segoe UI", system-ui, sans-serif;
@@ -98,23 +97,7 @@ body{
   .form-error{
     color: red;
 }
-
-//   .btn-primary {
-//     border-radius: 10px;
-//     min-height: 30px;
-//     min-width: 100px;
-//     border: none;
-//     background-color: #a8dcf4;
-//   }
-//   .btn-primary:hover {
-//     background-color: #27a1e3;
-//   }
   
-  $bg-color: #424242;
-  $hl-color: #2196F3;
-  $muted-color: mix(white, $bg-color, 70%);
-  $trans-time: 300ms;
-  $width: 320px;
   
   *,
   :before,
@@ -132,7 +115,12 @@ body{
     gap: 10px;
     width: $width;
     margin: 45px auto;
-    
+    height: auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 20px;
+    border-color: #424242;
+ 
     h1 {
       font-size: 3em;
       font-weight: 300;
@@ -261,3 +249,4 @@ body{
   }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+

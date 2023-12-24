@@ -12,28 +12,15 @@
         <th>Click numéro {{ card.numClick }}</th>
         <td>{{ card.valClickChrono }} ms </td>
       </tr>
-    
     </tbody>
   </table>
 
-
-<div>
-      
+<!-- <div>Temps moyen d'un clic: {{}}</div> -->
+<div> 
       <mat-paginator
       [length]="this.clicks.length"
       [pageSize]="3"
       [PageSizeOptions]="[3,6,9]"
     (page)="OnPageChange($event)"
     ></mat-paginator>
-    
-
-<!--  
- <mat-paginator 
-               [length]="this.cardsItems.length" 
-               [pageSize]="1" 
-               [pageSizeOptions]="[3,6,9]"
-               (page)="OnPageChange($event)">
-               
-</mat-paginator>  -->
 </div>
-<!-- <mat-slide-toggle>Toggle me!</mat-slide-toggle> -->
