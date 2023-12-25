@@ -24,9 +24,13 @@ namespace WebApplication1.Controllers
         private static ISession sessionStatic;//declaration de la session en static 
         private readonly string _connectionString = "server=127.0.0.1;user=root;database=Onyx;password=";//connexion a la bd -> plus tard mise en place du singleton
         private MySqlConnection _myConnection;
+        private UserDAO user;
 
-       
 
+     public   UserController()
+        {
+            this.user = new UserDAO();
+        }
         //[HttpGet]
         //public async Task<ActionResult<List<User>>> GetUsers()
         //{
@@ -36,13 +40,13 @@ namespace WebApplication1.Controllers
         //        {
         //            ID = 1223213,
         //            pseudo = "Rafik",
-                  
+
         //        },
         //        new User
         //        {
         //            ID = 13,
         //            pseudo = "Ramazan",
-                   
+
         //        }
         //    };
         //}
@@ -53,7 +57,7 @@ namespace WebApplication1.Controllers
             UserDAO user = new UserDAO();
             var dictionary = new Dictionary<string, object>();
             dictionary.Add("nom", "Bryan");
-            var select = user.SelectAllUsers("SELECT * from utilisateur where pseudo =@nom ", dictionary);
+            var select = user.SelectUser(dictionary);
             if(select != null)
             {
                 Console.WriteLine("Le user est present dans la bd ");
@@ -75,10 +79,10 @@ namespace WebApplication1.Controllers
         public string VerifyUtilisateur([FromBody] User myObject)
         {
             var pseudo = myObject.pseudo;
-            UserDAO user = new UserDAO();
-            var dictionary = new Dictionary<string, object>();
+           
+            var dictionary = new Dictionary<string, object>();//pour passer en parametre les arguments 
             dictionary.Add("nom", pseudo);
-            var select = user.SelectAllUsers("SELECT * from utilisateur where pseudo =@nom ", dictionary);
+            var select = user.SelectUser(dictionary);
             if (select != null)
             {
                 Console.WriteLine("Le user est present dans la bd ");
@@ -106,18 +110,14 @@ namespace WebApplication1.Controllers
         [HttpPost("userInsert")]
         public void InsertUser([FromBody] User myObject)
         {
-            _myConnection = new MySqlConnection(_connectionString);
-            _myConnection.Open();
+
+
             var pseudo = myObject.pseudo;
-          
-            string sql = "INSERT INTO utilisateur (pseudo) VALUES (@pseudo);";
-            using (MySqlCommand command = new MySqlCommand(sql, _myConnection))
-            {
-                command.Parameters.AddWithValue("@pseudo", pseudo);
-          
-                command.ExecuteNonQuery();
-                Console.WriteLine("Table créée avec succès !");
-            }
+            
+            var dictionnaire = new Dictionary<string, object>();//pour passer en parametre les arguments 
+            dictionnaire.Add("pseudo", pseudo);
+           this.user.InsertUser(dictionnaire);
+
         }
 
         /// <summary>
@@ -132,10 +132,7 @@ namespace WebApplication1.Controllers
 
             sessionStatic = httpContext.Session;
             sessionStatic.SetString("pseudo", pseudo);
-       
-            
-
-          
+        
         }
         /// <summary>
         /// Cette methode detruit la session pour la deconnexion

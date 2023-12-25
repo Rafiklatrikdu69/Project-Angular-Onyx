@@ -48,6 +48,31 @@ namespace WebApplication1.Models
 
             return dt;
         }
+        public DataTable getLignes(string sql, Dictionary<string, object> args = null)
+        {
+
+            Singleton singleton = Singleton.Instance;
+
+
+
+            var statement = this._requete(sql, args);
+            DataTable dt = new DataTable();
+
+            using (MySqlDataReader reader = statement.ExecuteReader())
+            {
+                dt.Load(reader);
+            }
+
+
+
+            return dt;
+
+        }
+        public void  Insert(string sql, Dictionary<string, object> args = null)
+        {
+             this._requete(sql, args);
+            
+        }
 
 
     }

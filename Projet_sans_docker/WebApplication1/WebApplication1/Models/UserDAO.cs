@@ -6,8 +6,9 @@ namespace WebApplication1.Models
 {
     public class UserDAO : DAO
     {
-        public User SelectAllUsers(string sql, Dictionary<string, object> args)
+        public User SelectUser(Dictionary<string, object> args)
         {
+            string sql = "SELECT * from utilisateur where pseudo =@nom ";
             DataTable tab = this.getLigne(sql, args);
             foreach (DataRow row in tab.Rows)
             {
@@ -19,6 +20,12 @@ namespace WebApplication1.Models
             return null;
             
 
+
+        }
+        public void InsertUser(Dictionary<string, object> args)
+        {
+            string sql = "INSERT INTO utilisateur (pseudo) VALUES (@pseudo);";
+            this.Insert(sql,args);
 
         }
     }
