@@ -3,9 +3,11 @@ import { Component } from '@angular/core';
 import { timeout } from 'rxjs';
 import { UserService } from '../../modules/core-app-image/services/user.service';
 import { Router } from '@angular/router';
+import { Sessions } from '../../modules/core-app-image/models/Sessions';
+
 import { GameService } from '../../modules/core-app-image/services/game.service';
 import { Click } from '../../modules/core-app-image/models/Click';
-import { waitForDebugger } from 'node:inspector';
+import { User } from '../../modules/core-app-image/models/User';
 
 @Component({
   selector: 'app-jeu',
@@ -29,6 +31,7 @@ export class JeuComponent {
   tabValeurChrono = []
   tabClicks:Click[] = []
   session!:string
+
   constructor(private userService:UserService,private router:Router,private gameService:GameService){
     
   }
@@ -39,26 +42,21 @@ export class JeuComponent {
       let n = data;
       this.nbClickMax= Object.assign(n);
     });
-    this.userService.getSessionPseudo().subscribe(data=>{
-      console.log(data)
-      if(data==="pas de session !"){
-        alert("il ya pas de session !")
-        this.router.navigate(['/app-form-connexion'])
-      }else{
-        this.session=data;
-      }
+      this.userService.getSessionPseudo().subscribe(data=>{
+        console.log(data)
+       let session = new Sessions()
+       session.verifsession(data,this.router)
+       this.session = data
     });
+
     let img = document.getElementById('img');
     img?.setAttribute('src',this.myPix[this.randomNumber]); 
     img!.style.position = 'absolute';
-    if(!this.tabPositionImage.includes(document.body.clientHeight * Math.random()+document.body.clientWidth * Math.random())){
+      if(!this.tabPositionImage.includes(document.body.clientHeight * Math.random()+document.body.clientWidth * Math.random())){
       img!.style.top = document.body.clientHeight * Math.random() + 'px';
       img!.style.left = document.body.clientWidth * Math.random() + 'px';
       this.tabPositionImage.push(document.body.clientHeight * Math.random()+document.body.clientWidth * Math.random())
     }
-    
-    
-    
   }
   ms: any = '0' + 0;
   sec: any = '0' + 0;

@@ -1,39 +1,54 @@
 ﻿using Google.Protobuf.Collections;
+using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.Data;
 
 namespace WebApplication1.Models
 {
-    abstract class DAO  
+    public abstract class DAO
     {
-
-        public object _requete(string sql,Array args =null)
+        public MySqlCommand _requete(string sql, Dictionary<string, object> args = null)
         {
             Singleton singleton = Singleton.Instance;
-            singleton.getBdd().Open();
+           
+
             using (MySqlCommand command = new MySqlCommand(sql, singleton.getBdd()))
             {
-                        if(args != null)
-                         {
-                            command.ExecuteNonQuery();
-                }
-                else {
-
-                    command.Parameters.AddRange(args);
-                        command.ExecuteNonQuery();
-
+                if (args != null)
+                {
+                    foreach (var arg in args)
+                    {
+                        command.Parameters.AddWithValue(arg.Key, arg.Value);
+                    }
                 }
 
+                command.ExecuteNonQuery();
+          
                 return command;
             }
-            
         }
-        public void select (string sql,Array args = null)
+
+        public DataTable getLigne(string sql, Dictionary<string, object> args = null)
         {
+            Singleton singleton = Singleton.Instance;
+
+           
+
             var statement = this._requete(sql, args);
-            Console.Write(statement);
+            DataTable dt = new DataTable();
 
+            using (MySqlDataReader reader = statement.ExecuteReader())
+            {
+                dt.Load(reader);
+            }
 
+           
+
+            return dt;
         }
+
 
     }
 }

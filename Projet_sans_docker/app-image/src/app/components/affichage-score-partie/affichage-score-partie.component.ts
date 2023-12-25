@@ -23,7 +23,6 @@ export class AffichageScorePartieComponent {
           "Numero du click :"+c.numClick+"Numero de la partie :"+c.numPartie+ "Valeur du chrono :"+c.valClickChrono
           )
         }
-        //this.gameService.insertInfoClick(this.clicks).subscribe();
       })
     }
 

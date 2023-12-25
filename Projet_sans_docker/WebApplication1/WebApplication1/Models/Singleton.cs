@@ -9,6 +9,7 @@ namespace WebApplication1.Models
         Singleton() { 
             string connection = "server=127.0.0.1;user=root;database=Onyx;password=";
              _myConnection = new MySqlConnection(connection);
+            _myConnection.Open();
         }
 
         public static Singleton Instance

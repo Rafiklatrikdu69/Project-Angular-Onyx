@@ -27,37 +27,43 @@ namespace WebApplication1.Controllers
 
        
 
-        [HttpGet]
-        public async Task<ActionResult<List<User>>> GetUsers()
-        {
-            return new List<User>
-            {
-                new User
-                {
-                    ID = 1223213,
-                    pseudo = "Rafik",
+        //[HttpGet]
+        //public async Task<ActionResult<List<User>>> GetUsers()
+        //{
+        //    return new List<User>
+        //    {
+        //        new User
+        //        {
+        //            ID = 1223213,
+        //            pseudo = "Rafik",
                   
-                },
-                new User
-                {
-                    ID = 13,
-                    pseudo = "Ramazan",
+        //        },
+        //        new User
+        //        {
+        //            ID = 13,
+        //            pseudo = "Ramazan",
                    
-                }
-            };
-        }
+        //        }
+        //    };
+        //}
 
-        [HttpGet("insert")]
-        public void CreateUser()
+        [HttpGet("selectTest")]
+        public void test()
         {
-            //Singleton.Instance();
-            _myConnection = new MySqlConnection(_connectionString);
-            _myConnection.Open();
-            string sql = "INSERT INTO `utilisateur` (pseudo) VALUES ('Rafik');";
-            using (MySqlCommand command = new MySqlCommand(sql, _myConnection))
+            UserDAO user = new UserDAO();
+            var dictionary = new Dictionary<string, object>();
+            dictionary.Add("nom", "Bryan");
+            var select = user.SelectAllUsers("SELECT * from utilisateur where pseudo =@nom ", dictionary);
+            if(select != null)
             {
-                command.ExecuteNonQuery();
-                Console.WriteLine("Table créée avec succès !");
+                Console.WriteLine("Le user est present dans la bd ");
+                Console.WriteLine("L'id " + select.ID);
+                Console.WriteLine("Le pseudo " + select.pseudo);
+
+            }
+            else
+            {
+                Console.WriteLine("quoicoubeh il est pas la ouuuuuu I");
             }
         }
         /// <summary>
@@ -68,26 +74,30 @@ namespace WebApplication1.Controllers
         [HttpPost("userSelect")]
         public string VerifyUtilisateur([FromBody] User myObject)
         {
-            _myConnection = new MySqlConnection(_connectionString);
-            _myConnection.Open();
             var pseudo = myObject.pseudo;
-
-            string sql = "SELECT pseudo from utilisateur WHERE pseudo=@pseudo;";
-            using (MySqlCommand command = new MySqlCommand(sql, _myConnection))
+            UserDAO user = new UserDAO();
+            var dictionary = new Dictionary<string, object>();
+            dictionary.Add("nom", pseudo);
+            var select = user.SelectAllUsers("SELECT * from utilisateur where pseudo =@nom ", dictionary);
+            if (select != null)
             {
-                command.Parameters.AddWithValue("@pseudo", pseudo);
-                using (MySqlDataReader reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        Console.WriteLine("l'utilisateur est déjà présent !");
-                        Console.WriteLine(String.Format("{0}", reader["pseudo"]));
-                        return "existe";
-                    }
-                }
-
-                return "Existe pas !";
+                Console.WriteLine("Le user est present dans la bd ");
+                Console.WriteLine("L'id " + select.ID);
+                Console.WriteLine("Le pseudo " + select.pseudo);
+                return "existe";
+              
             }
+            else
+            {
+
+                Console.WriteLine("quoicoubeh il est pas la ouuuuuu I");
+               
+
+            }
+            return "Existe pas !";
+      
+
+           
         }
         /// <summary>
         /// Cette methode insert l'utilisateur dans la bd 

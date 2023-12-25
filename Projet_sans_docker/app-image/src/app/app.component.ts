@@ -14,14 +14,14 @@ export class AppComponent {
 
   constructor(private userService: UserService) {}
 
-  ngOnInit() {
-    // this.userService.createTable().subscribe();
-    this.userService.getUser().subscribe((result: User[]) => {
-      this.users = result;
-      console.log(this.users);
-    });
+  // ngOnInit() {
+  //   // this.userService.createTable().subscribe();
+  //   this.userService.getUser().subscribe((result: User[]) => {
+  //     this.users = result;
+  //     console.log(this.users);
+  //   });
 
     
-  }
+  // }
   
 }
