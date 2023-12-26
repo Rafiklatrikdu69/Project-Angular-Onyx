@@ -72,30 +72,24 @@ namespace WebApplication1.Controllers
 
 
 
-            _myConnection = new MySqlConnection(_connectionString);
-            _myConnection.Open();
-            for (int i = 0; i < click.Length; i++)
-            {
-                Console.WriteLine("Info sur le clique :" + click[i].numPartie);
-            }
-
-
             var select = this._gameDAO.getPartieByDate();
+         
             var idPartie = (int)select.numPartie;
-       
+            
             string insertSql = "INSERT INTO gamed (numPartie,numClick,valClickchrono) VALUES(@numPartie,@numClick,@valClick)";
+            Dictionary<int, Dictionary<string, object>> args = new Dictionary<int, Dictionary<string, object>>();
             for (int i = 0; i < click.Length; i++)
             {
-                using (MySqlCommand command = new MySqlCommand(insertSql, _myConnection))
-                {
-                    command.Parameters.AddWithValue("@numPartie", idPartie);
-                    command.Parameters.AddWithValue("@numClick", click[i].numClick);
-                    command.Parameters.AddWithValue("@valClick", click[i].valClickChrono);
-                    command.ExecuteNonQuery();
+                Dictionary<string, object> dico = new Dictionary<string, object>();
+                Console.WriteLine("num click : " + click[i].numClick);
+                Console.WriteLine("val Chrono" + click[i].valClickChrono);
+                dico.Add("numPartie", idPartie);
+                dico.Add("numClick", click[i].numClick);
+                dico.Add("valClick", click[i].valClickChrono);
+                args.Add(i, dico);
 
-
-                }
             }
+            this._gameDAO.insertClicks(args);
         }
         //requete pour recuperer les parties du joueur avec son nom
         [HttpGet("getPartiesJoueur")]

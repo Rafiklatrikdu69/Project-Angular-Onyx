@@ -18,6 +18,7 @@ import { AffichageScorePartieComponent } from './components/affichage-score-part
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatInputModule} from '@angular/material/input';
 @NgModule({
   declarations: [
     
@@ -32,6 +33,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
   ],
   imports: [
     MatPaginatorModule,
+    MatInputModule, 
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

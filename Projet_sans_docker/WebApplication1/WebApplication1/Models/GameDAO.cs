@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.classes;
 
@@ -34,7 +35,7 @@ namespace WebApplication1.Models
         {
             List<ClickPartie> listGame = new List<ClickPartie>();
             string selectClick = "SELECT * FROM gamed WHERE @id=numPartie";
-            DataTable tab = this.getLigne(selectClick, args);
+            DataTable tab = this.getLignes(selectClick, args);
             foreach (DataRow row in tab.Rows)
             {
                 ClickPartie c = new ClickPartie(Convert.ToInt32(row["numPartie"]), row["numClick"].ToString(), row["valClickChrono"]);
@@ -46,8 +47,15 @@ namespace WebApplication1.Models
 
             return listGame;
         }
-        public void insertClicks()
+        public void insertClicks(Dictionary<int, Dictionary<string, object>> args = null)
         {
+            string insertSql = "INSERT INTO gamed (numPartie,numClick,valClickchrono) VALUES(@numPartie,@numClick,@valClick);";
+            foreach (var kvp1 in args)
+            {
+                Console.WriteLine("Key = {0}, Inner Dict:", kvp1.Key);
+                this.Insert(insertSql,kvp1.Value);
+        
+            }
 
         }
     }

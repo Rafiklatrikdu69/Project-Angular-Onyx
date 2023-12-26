@@ -26,6 +26,7 @@ namespace WebApplication1.Models
 
         public MySqlConnection getBdd()
         {
+       
             return _myConnection;
         }
     }

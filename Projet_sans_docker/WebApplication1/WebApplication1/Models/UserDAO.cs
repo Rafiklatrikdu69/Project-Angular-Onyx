@@ -26,6 +26,7 @@ namespace WebApplication1.Models
         {
             string sql = "INSERT INTO utilisateur (pseudo) VALUES (@pseudo);";
             this.Insert(sql,args);
+            
 
         }
     }
