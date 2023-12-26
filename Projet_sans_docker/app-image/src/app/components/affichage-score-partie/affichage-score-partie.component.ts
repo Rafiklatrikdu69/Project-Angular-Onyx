@@ -6,39 +6,42 @@ import { PageEvent } from '@angular/material/paginator';
 @Component({
   selector: 'app-affichage-score-partie',
   templateUrl: './affichage-score-partie.component.html',
-  styleUrl: './affichage-score-partie.component.scss'
+  styleUrls: ['./affichage-score-partie.component.scss']
 })
 export class AffichageScorePartieComponent {
-  clicks:Click[]=[];
-  public cardsItems = [{cardNumber:1},{cardNumber:12},{cardNumber:24},{cardNumber:126},{cardNumber:45},{cardNumber:32},{cardNumber:1},{cardNumber:12},{cardNumber:24},{cardNumber:126},{cardNumber:45},{cardNumber:32},{cardNumber:1},{cardNumber:12},{cardNumber:24},{cardNumber:126},{cardNumber:45},{cardNumber:32}]
-  public pageSlice !:Click[];
-  constructor(private gameService:GameService){}
- 
-  ngOnInit(): void {
-    console.log("debut !");
-    this.gameService.getAllClick().subscribe((result:Click[])=>{
-      this.clicks=result;
-      this.pageSlice = this.clicks.slice(0,2)
-      for(let  c of this.clicks){
-        console.log(
-          "Numero du click :"+c.numClick+"Numero de la partie :"+c.numPartie+ "Valeur du chrono :"+c.valClickChrono
-          )
-        }
-      })
-    }
+  clicks: Click[] = [];
+  displayedColumns: string[] = ['numPartie', 'numClick', 'valClickChrono'];
+  public pageSlice!: Click[];
+  dataSource:any;
 
-    OnPageChange(event:PageEvent){
-     console.log(event)
-    
-     const   debut = event.pageIndex * event.pageSize;
-     let finIndex = debut + event.pageSize;
-     if(finIndex > this.clicks.length){
-       finIndex = this.clicks.length;
-     }
-        this.pageSlice =   this.clicks.slice(debut,finIndex)
-
-     }
-  
-
-  
+  constructor(private gameService: GameService) {
+   
   }
+
+  ngOnInit(): void {
+    console.log("Début !");
+    this.gameService.getAllClick().subscribe((result: Click[]) => {
+      this.clicks = result;
+      this.pageSlice = this.clicks.slice(0, 2);
+      this.dataSource = this.pageSlice;
+      for (let c of this.clicks) {
+        console.log(
+          "Numéro du clic :" + c.numClick + " Numéro de la partie :" + c.numPartie + " Valeur du chrono :" + c.valClickChrono
+        );
+      }
+      
+   
+    });
+  }
+
+  OnPageChange(event: PageEvent): void {
+    console.log(event);
+    const debut = event.pageIndex * event.pageSize;
+    let finIndex = debut + event.pageSize;
+    if (finIndex > this.clicks.length) {
+      finIndex = this.clicks.length;
+    }
+    this.pageSlice = this.clicks.slice(debut, finIndex);
+    this.dataSource = this.pageSlice;
+  }
+}

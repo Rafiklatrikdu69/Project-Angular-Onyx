@@ -1,0 +1,8 @@
+
+<mat-slide-toggle [ngClass]="isOpen() ? 'is-open': ''" (click)="toggle()">Toggle me!</mat-slide-toggle>
+<div>
+    <app-form-connexion *ngIf="!isOpen()"></app-form-connexion>
+    
+    
+    <app-inscription-form *ngIf="isOpen()"></app-inscription-form>
+</div>
