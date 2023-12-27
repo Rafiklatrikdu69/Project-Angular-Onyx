@@ -7,18 +7,19 @@ import { InscriptionFormComponent } from './components/inscription-form/inscript
 import { JeuComponent } from './components/jeu/jeu.component';
 import { AffichageScoreComponent } from './components/affichage-score/affichage-score.component';
 import { AffichageScorePartieComponent } from './components/affichage-score-partie/affichage-score-partie.component';
+import { AuthentificationComponent} from './components/authentification/authentification.component';
 const routes: Routes = [{
   path: '', component: HomeComponent
-},{
-  path : 'app-form-connexion', component: FormConnexionComponent
-},{
-  path:'app-inscription-form', component:InscriptionFormComponent
-},{
+},
+{
   path:'app-jeu',component:JeuComponent
 },{
   path: 'affichage-score', component:AffichageScoreComponent
 },{
   path:'affichage-score-partie', component:AffichageScorePartieComponent
+},
+{
+  path:'app-authentification',component:AuthentificationComponent
 }];
 
 @NgModule({

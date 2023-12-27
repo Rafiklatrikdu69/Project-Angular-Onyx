@@ -1,8 +1,13 @@
 
-<mat-slide-toggle [ngClass]="isOpen() ? 'is-open': ''" (click)="toggle()">Toggle me!</mat-slide-toggle>
-<div>
-    <app-form-connexion *ngIf="!isOpen()"></app-form-connexion>
+<!-- Your component template -->
+
+<h1>Angular Animations Demo</h1>
+<div class="flex-form">
+    <mat-slide-toggle [ngClass]="isOpen ? 'is-open': ''" (click)="toggle()">S'inscrire</mat-slide-toggle>
     
-    
-    <app-inscription-form *ngIf="isOpen()"></app-inscription-form>
+    <div [@toggleBox]="isOpen ? 'open' : 'closed'" class="form-container">
+        <app-form-connexion *ngIf="!isOpen"></app-form-connexion>
+        <app-inscription-form *ngIf="isOpen"></app-inscription-form>
+    </div>
 </div>
+

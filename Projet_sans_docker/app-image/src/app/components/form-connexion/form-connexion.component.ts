@@ -65,6 +65,10 @@ export class FormConnexionComponent {
             this.userService.setSessionPseudo(this.form.pseudo).subscribe(data=>{
               // console.log(data)
             });
+            
+            this.userService.getSessionPseudo().subscribe(data=>{
+              alert(data);
+            });
          //   this.userService.getSessionPseudo().subscribe();
           }
         }
