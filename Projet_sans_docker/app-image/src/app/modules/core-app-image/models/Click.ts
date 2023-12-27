@@ -1,4 +1,4 @@
-export class Click{
+export  class Click{
     numPartie!:number
     numClick!:object
     valClickChrono!:object

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
@@ -15,6 +16,7 @@ namespace WebApplication1.Controllers
         private readonly string _connectionString = "server=127.0.0.1;user=root;database=Onyx;password=";//connexion a la bd -> plus tard mise en place du singleton
         private MySqlConnection _myConnection;
         private GameDAO _gameDAO;
+        public static string _pseudo;
        public GameController()
         {
             this._gameDAO = new GameDAO();
@@ -37,14 +39,21 @@ namespace WebApplication1.Controllers
          
 
         }
-        [HttpGet("getPartieByDate")]
-        public async Task<ActionResult<List<ClickPartie>>> getPartieByDate()
+        [HttpPost("getPartieByDate")]
+        public async Task<ActionResult<List<ClickPartie>>> getPartieByDate([FromBody] User pseudo)
         {
-           var select =  this._gameDAO.getPartieByDate();
+            Console.WriteLine("Le pseudo : " +  pseudo.ID);
+            _pseudo = pseudo.pseudo;
+            var dictionnaireSelectPseudo = new Dictionary<string, object>();
+            dictionnaireSelectPseudo.Add("pseudo", _pseudo);
+            //Console.WriteLine("La session" + UserController.sessionStatic.GetString("pseudo"));
+            var select =  this._gameDAO.getPartieByDate(dictionnaireSelectPseudo);
             Console.WriteLine(select.numPartie);
+            Console.WriteLine("pseudo de la partie : "+select.pseudo);
             var  idPartie = (int)select.numPartie;
             var dictionnaire = new Dictionary<string, object>();//pour passer en parametre les arguments 
             dictionnaire.Add("id", idPartie);
+   
             List<ClickPartie> listGame =  this._gameDAO.getAllClicks(dictionnaire);
            
 
@@ -71,12 +80,12 @@ namespace WebApplication1.Controllers
         {
 
 
-
-            var select = this._gameDAO.getPartieByDate();
-         
-            var idPartie = (int)select.numPartie;
-            
-            string insertSql = "INSERT INTO gamed (numPartie,numClick,valClickchrono) VALUES(@numPartie,@numClick,@valClick)";
+            Dictionary<string,object> dic = new Dictionary<string, object> ();
+          
+            dic.Add("pseudo", _pseudo);
+         var select = this._gameDAO.getPartieByDate( dic);
+                     var idPartie = (int)select.numPartie;
+                        string insertSql = "INSERT INTO gamed (numPartie,numClick,valClickchrono) VALUES(@numPartie,@numClick,@valClick)";
             Dictionary<int, Dictionary<string, object>> args = new Dictionary<int, Dictionary<string, object>>();
             for (int i = 0; i < click.Length; i++)
             {
@@ -87,8 +96,7 @@ namespace WebApplication1.Controllers
                 dico.Add("numClick", click[i].numClick);
                 dico.Add("valClick", click[i].valClickChrono);
                 args.Add(i, dico);
-
-            }
+                       }
             this._gameDAO.insertClicks(args);
         }
         //requete pour recuperer les parties du joueur avec son nom

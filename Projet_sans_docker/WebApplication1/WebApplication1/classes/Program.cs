@@ -1,47 +1,50 @@
 using WebApplication1.Models;
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Ajoutez des services au conteneur.
 builder.Services.AddControllers();
-// En savoir plus sur la configuration de Swagger/OpenAPI à https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddCors(options => options.AddPolicy(name: "App_user",
-    policy =>
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("App_user", policy =>
     {
-        policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
-    }));
+        policy.WithOrigins("http://localhost:4200")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials(); // Autoriser les cookies avec les demandes CORS
+    });
 
-// Ajoutez cette ligne dans la méthode ConfigureServices de votre classe Startup
+});
+
 builder.Services.AddScoped<ConnexionBD>();
-
-//builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddDistributedMemoryCache();
-
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true; // consent required
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.IdleTimeout = TimeSpan.FromDays(1);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
+    options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.None; // Permet l'envoi sur une connexion non sécurisée (HTTP)
+    options.Cookie.Path = "/";
 });
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();
 
 app.UseSession();
 
-// Configurez le pipeline de requête HTTP.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors("App_user");
 
+app.UseCors("App_user");
 app.UseAuthorization();
-//app.UseSession();
 app.MapControllers();
 
 app.Run();
