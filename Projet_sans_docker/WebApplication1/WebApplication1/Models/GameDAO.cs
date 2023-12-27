@@ -15,19 +15,27 @@ namespace WebApplication1.Models
 
         }
 
-        public Game getPartieByDate(Dictionary<string, object> args =null)
+        public Game getPartieByDate(Dictionary<string, object> args)
         {
-            string sql = "SELECT * FROM gameh where dateHeure = (SELECT dateHeure FROM gameh ORDER BY dateHeure DESC LIMIT 1);";
-      
-
-            DataTable tab = this.getLigne(sql, args);
-            foreach (DataRow row in tab.Rows)
+            string sql = "SELECT * FROM gameh WHERE  pseudo = @pseudo AND dateHeure = (SELECT dateHeure FROM gameh ORDER BY dateHeure DESC LIMIT 1) ;";
+            if(args == null)
             {
-                Game g = new Game(Convert.ToInt32(row["numPartie"]), row["pseudo"].ToString(), row["valMeilleurChrono"], row["valMoyenneChrono"], row["dateHeure"].ToString());
-                // Console.WriteLine(row["pseudo"].ToString());
-                return g;
+                Console.WriteLine("Cest  null !!!!");
 
             }
+            else
+            {
+                DataTable tab = this.getLigne(sql, args);
+                foreach (DataRow row in tab.Rows)
+                {
+                    Game g = new Game(Convert.ToInt32(row["numPartie"]), row["pseudo"].ToString(), row["valMeilleurChrono"], row["valMoyenneChrono"], row["dateHeure"].ToString());
+                    // Console.WriteLine(row["pseudo"].ToString());
+                    return g;
+
+                }
+            }
+
+           
             return null;
 
         }

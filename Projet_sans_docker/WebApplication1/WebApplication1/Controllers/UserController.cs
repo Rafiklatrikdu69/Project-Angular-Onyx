@@ -16,60 +16,25 @@ using System.Net.Http;
 using WebApplication1.classes;
 namespace WebApplication1.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
    
-        private static ISession sessionStatic;//declaration de la session en static 
-        private readonly string _connectionString = "server=127.0.0.1;user=root;database=Onyx;password=";//connexion a la bd -> plus tard mise en place du singleton
-        private MySqlConnection _myConnection;
+        private  ISession sessionStatic;//declaration de la session en static
+        private readonly IHttpContextAccessor httpContextAccessor;
         private UserDAO user;
 
 
-     public   UserController()
+     public   UserController(IHttpContextAccessor httpContextAccessor)
         {
+            this.httpContextAccessor = httpContextAccessor;
             this.user = new UserDAO();
         }
-        //[HttpGet]
-        //public async Task<ActionResult<List<User>>> GetUsers()
-        //{
-        //    return new List<User>
-        //    {
-        //        new User
-        //        {
-        //            ID = 1223213,
-        //            pseudo = "Rafik",
+     
 
-        //        },
-        //        new User
-        //        {
-        //            ID = 13,
-        //            pseudo = "Ramazan",
-
-        //        }
-        //    };
-        //}
-
-        [HttpGet("selectTest")]
-        public void test()
-        {
-            UserDAO user = new UserDAO();
-            var dictionary = new Dictionary<string, object>();
-            dictionary.Add("nom", "Bryan");
-            var select = user.SelectUser(dictionary);
-            if(select != null)
-            {
-                Console.WriteLine("Le user est present dans la bd ");
-                Console.WriteLine("L'id " + select.ID);
-                Console.WriteLine("Le pseudo " + select.pseudo);
-
-            }
-            else
-            {
-                Console.WriteLine("quoicoubeh il est pas la ouuuuuu I");
-            }
-        }
+       
         /// <summary>
         /// Cette methode selectionne l'utilisateur dans la BD 
         /// </summary>
@@ -110,13 +75,10 @@ namespace WebApplication1.Controllers
         [HttpPost("userInsert")]
         public void InsertUser([FromBody] User myObject)
         {
-
-
             var pseudo = myObject.pseudo;
-            
             var dictionnaire = new Dictionary<string, object>();//pour passer en parametre les arguments 
             dictionnaire.Add("pseudo", pseudo);
-           this.user.InsertUser(dictionnaire);
+            this.user.InsertUser(dictionnaire);
 
         }
 
@@ -127,39 +89,47 @@ namespace WebApplication1.Controllers
         [HttpPost("session")]
         public void SetSessionValue([FromBody] User myObject)
         {
-            var httpContext = HttpContext;
-            var pseudo = myObject.pseudo;
+            var httpContext = httpContextAccessor.HttpContext;
+            Console.WriteLine("le pseudo : " + myObject.pseudo);
 
-            sessionStatic = httpContext.Session;
-            sessionStatic.SetString("pseudo", pseudo);
-        
+            if (httpContext != null)
+            {
+                var pseudo = myObject.pseudo;
+                httpContext.Session.SetString("pseudo", myObject.pseudo);
+            }
+            else
+            {
+                // Gérer le cas où HttpContext est null, si nécessaire.
+                Console.WriteLine("HttpContext est null.");
+            }
         }
-        /// <summary>
-        /// Cette methode detruit la session pour la deconnexion
-        /// </summary>
+
         [HttpDelete("deconnexion")]
-        public void deconnexion()
+        public void Deconnexion()
         {
-            var httpContext = HttpContext;
-            sessionStatic = httpContext.Session;
-            sessionStatic.Remove("pseudo");
-
+            var httpContext = httpContextAccessor.HttpContext;
+            httpContext.Session.Remove("pseudo");
         }
-        /// <summary>
-        /// Cette methode permet de recuperer la session actuel afin de verifier si l'utilisteur 
-        /// est bien connecter 
-        /// </summary>
-        /// <returns></returns>
+
         [HttpGet("test-session")]
         public string GetSessionValue()
         {
-            if (sessionStatic != null)
-            {
-                Console.WriteLine("La session : " + sessionStatic.GetString("pseudo"));
-            }
+            var httpContext = httpContextAccessor.HttpContext;
 
-            return sessionStatic?.GetString("pseudo") ?? "pas de session !";
+            if (httpContext.Session.GetString("pseudo") == null)
+            {
+                Console.WriteLine("La session est null");
+            }
+            else
+            {
+                Console.WriteLine(httpContext.Session.GetString("pseudo"));
+                Console.WriteLine("La session est pas null");
+                return httpContext.Session.GetString("pseudo")+"";
+            }
+            //httpContext.Session.SetString("pseudo", "Rafik");
+            return "pas de session ";
         }
+
         /// <summary>
         /// Cette methode permet de  lire le fichier Json et le traduit sous forme de 
         /// chaine de caractere ou de integer suivant le type de la classe DataJson

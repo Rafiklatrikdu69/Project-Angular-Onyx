@@ -50,14 +50,15 @@ export class UserService {
 //   );
 // }
 
-setSessionPseudo(pseudo:string) {
-  const myData = { id: '1', pseudo: pseudo};
-  return this.http.post("https://localhost:7289/api/User/session", myData);
+setSessionPseudo(pseudo: string) {
+  const myData = { id: "1", pseudo: pseudo };
+  return this.http.post("https://localhost:7289/api/User/session", myData,{withCredentials:true} );
 }
 
 getSessionPseudo() {
-  return this.http.get('https://localhost:7289/api/User/test-session',{responseType: 'text'});
+  return this.http.get('https://localhost:7289/api/User/test-session',{ withCredentials: true, responseType: 'text' });
 }
+
 public deconnexion(){
   return this.http.delete('https://localhost:7289/api/User/deconnexion');
 }
