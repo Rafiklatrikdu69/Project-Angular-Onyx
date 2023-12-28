@@ -1,6 +1,6 @@
 <div class="flex-container">
   <div>
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
       <!-- Définissez vos colonnes ici -->
       <ng-container matColumnDef="numPartie">
         <th mat-header-cell *matHeaderCellDef> numPartie </th>
@@ -28,7 +28,9 @@
       ></mat-paginator>
     </div>
   </div>
-
+  <div class="btn-donate">
+    Le Chrono Moyen : {{this.clickMoyen}} 
+  </div>
   <div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table">
       <!-- Définissez vos colonnes ici -->
@@ -58,4 +60,5 @@
       ></mat-paginator>
     </div>
   </div>
+ 
 </div>

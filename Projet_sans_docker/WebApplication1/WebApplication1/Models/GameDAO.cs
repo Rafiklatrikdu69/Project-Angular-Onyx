@@ -7,6 +7,10 @@ namespace WebApplication1.Models
 {
     public class GameDAO : DAO
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
         public  void insertPartie(Dictionary<string, object> args)
         {
 
@@ -14,7 +18,11 @@ namespace WebApplication1.Models
             this.Insert(sql, args);
 
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public Game getPartieByDate(Dictionary<string, object> args)
         {
             string sql = "SELECT * FROM gameh WHERE  pseudo = @pseudo AND dateHeure = (SELECT dateHeure FROM gameh ORDER BY dateHeure DESC LIMIT 1) ;";
@@ -39,6 +47,11 @@ namespace WebApplication1.Models
             return null;
 
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public List<ClickPartie> getAllClicks(Dictionary<string, object> args = null)
         {
             List<ClickPartie> listGame = new List<ClickPartie>();
@@ -65,6 +78,10 @@ namespace WebApplication1.Models
 
             return listGame;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
         public void insertClicks(Dictionary<int, Dictionary<string, object>> args = null)
         {
             string insertSql = "INSERT INTO gamed (numPartie,numClick,valClickchrono) VALUES(@numPartie,@numClick,@valClick);";
@@ -108,6 +125,22 @@ namespace WebApplication1.Models
             }
 
 
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public object getClickMoyen(Dictionary<string, object> args = null)
+        {
+            string sql = "SELECT valMoyenneChrono FROM gameh WHERE pseudo = @pseudo  AND dateHeure = (SELECT dateHeure FROM gameh ORDER BY dateHeure DESC LIMIT 1);";
+            DataTable click = this.getLigne(sql, args);
+            foreach (DataRow row in click.Rows)
+            {
+             return  row["valMoyenneChrono"];
+                
+            }
+            return null;
         }
     }
 }

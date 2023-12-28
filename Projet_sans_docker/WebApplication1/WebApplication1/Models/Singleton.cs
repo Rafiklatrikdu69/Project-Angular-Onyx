@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using System.Data;
+using MySql.Data.MySqlClient;
 
 namespace WebApplication1.Models
 {
@@ -6,10 +7,11 @@ namespace WebApplication1.Models
     {
         private static Singleton instance = null;
         private MySqlConnection _myConnection;
-        Singleton() { 
+
+        Singleton()
+        {
             string connection = "server=127.0.0.1;user=root;database=Onyx;password=";
-             _myConnection = new MySqlConnection(connection);
-            _myConnection.Open();
+            _myConnection = new MySqlConnection(connection);
         }
 
         public static Singleton Instance
@@ -26,7 +28,11 @@ namespace WebApplication1.Models
 
         public MySqlConnection getBdd()
         {
-       
+            if (_myConnection.State == ConnectionState.Closed)
+            {
+                _myConnection.Open();
+            }
+
             return _myConnection;
         }
     }

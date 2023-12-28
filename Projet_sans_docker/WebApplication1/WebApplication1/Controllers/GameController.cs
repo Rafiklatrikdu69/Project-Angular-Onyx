@@ -42,18 +42,9 @@ namespace WebApplication1.Controllers
         [HttpPost("getPartieByDate")]
         public List<ClickPartie> getPartieByDate([FromBody] User pseudo)
         {
-            //Console.WriteLine("Le pseudo : " +  pseudo.ID);
-            //_pseudo = pseudo.pseudo;
-            //var dictionnaireSelectPseudo = new Dictionary<string, object>();
-            //dictionnaireSelectPseudo.Add("pseudo", _pseudo);
-            ////Console.WriteLine("La session" + UserController.sessionStatic.GetString("pseudo"));
-            //var select =   this._gameDAO.getPartieByDate(dictionnaireSelectPseudo);
-            //Console.WriteLine(select.numPartie);
-            //Console.WriteLine("pseudo de la partie : "+select.pseudo);
-            //var  idPartie = (int)select.numPartie;
+       
             var dictionnaire = new Dictionary<string, object>();//pour passer en parametre les arguments 
-            //dictionnaire.Add("id", idPartie);
-            dictionnaire.Add("pseudo", "Rafik");
+            dictionnaire.Add("pseudo", pseudo.pseudo);
             List<ClickPartie> listGame =  this._gameDAO.getAllClicks(dictionnaire);
            
 
@@ -97,6 +88,22 @@ namespace WebApplication1.Controllers
                 args.Add(i, dico);
                        }
             this._gameDAO.insertClicks(args);
+        }
+        [HttpPost("getValMoyenneClick")]
+
+        public object getClickMoyen([FromBody]User user)
+        {
+            Dictionary<string, object> dico = new Dictionary<string, object>();
+            dico.Add("pseudo", user.pseudo);
+            Console.WriteLine("le pseudo clickMoyen "+user.pseudo);
+            var clickMoyen = this._gameDAO.getClickMoyen(dico);
+            if(clickMoyen != null)
+            {
+                Console.WriteLine(clickMoyen);
+                return clickMoyen;
+            }
+            return null;
+
         }
         //requete pour recuperer les parties du joueur avec son nom
         [HttpGet("getPartiesJoueur")]

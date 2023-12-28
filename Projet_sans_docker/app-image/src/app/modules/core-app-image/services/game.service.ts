@@ -16,11 +16,12 @@ export class GameService {
     return  this.http.post("https://localhost:7289/api/Game/partie",data,{responseType:"text"})
   }
   
-  public getAllClick(pseudo:string):Observable<Click[]>{
+  public  async getAllClick(pseudo:string){
     const data = {id:"1",pseudo:pseudo}
     return this.http.post<Click[]>("https://localhost:7289/api/Game/getPartieByDate",data,{responseType:"json"})
   }
-  public insertInfoClick(clicks:Click[]){
+  
+  public  insertInfoClick(clicks:Click[]){
     const httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json'})
     }
@@ -28,5 +29,10 @@ export class GameService {
     const data = JSON.stringify(clicks);
     return this.http.post("https://localhost:7289/api/Game/insertInfoclick",data,httpOptions)
     
+  }
+  public async getClickMoyen(pseudo: string) {
+    const data = { id: 1, pseudo: pseudo };
+    console.log(data);
+    return this.http.post("https://localhost:7289/api/Game/getValMoyenneClick", data, { responseType: "text" });
   }
 }

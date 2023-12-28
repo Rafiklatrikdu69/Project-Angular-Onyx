@@ -21,13 +21,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatInputModule} from '@angular/material/input';
 import { AuthentificationComponent } from './components/authentification/authentification.component';
 import {
-  MatDialog,
-  MAT_DIALOG_DATA,
+
   MatDialogRef,
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
+ 
 } from '@angular/material/dialog';
 @NgModule({
   declarations: [
@@ -50,6 +46,7 @@ import {
     // MatDialogContent,
     // MatDialogActions,
     // MatDialogClose,
+    // MatDialogRef,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
