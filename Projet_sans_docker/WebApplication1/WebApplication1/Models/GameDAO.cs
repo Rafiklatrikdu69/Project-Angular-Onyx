@@ -42,9 +42,19 @@ namespace WebApplication1.Models
         public List<ClickPartie> getAllClicks(Dictionary<string, object> args = null)
         {
             List<ClickPartie> listGame = new List<ClickPartie>();
-            string selectClick = "SELECT * FROM gamed WHERE @id=numPartie";
-            DataTable tab = this.getLignes(selectClick, args);
+            string selectClick = "SELECT g.* FROM gameh g JOIN gamed gd ON gd.numPartie = g.numPartie WHERE g.pseudo = @pseudo ORDER BY g.dateHeure DESC LIMIT 1;";
+            DataTable tab = this.getLigne(selectClick,args);
+            var idPartie = 0;
             foreach (DataRow row in tab.Rows)
+            {
+                idPartie = (int)row["numPartie"];
+                Console.WriteLine("le num de la partie mec quoicoubeh : " + row["numPartie"]);
+            }
+            Dictionary<string, object> numPartie = new Dictionary<string, object>();
+            numPartie.Add("numPartie", idPartie);
+            string select = "SELECT * FROM gamed WHERE numPartie=@numPartie";
+           DataTable tableau = this.getLignes(select, numPartie);
+            foreach (DataRow row in tableau.Rows)
             {
                 ClickPartie c = new ClickPartie(Convert.ToInt32(row["numPartie"]), row["numClick"].ToString(), row["valClickChrono"]);
                 listGame.Add(c);
@@ -58,12 +68,45 @@ namespace WebApplication1.Models
         public void insertClicks(Dictionary<int, Dictionary<string, object>> args = null)
         {
             string insertSql = "INSERT INTO gamed (numPartie,numClick,valClickchrono) VALUES(@numPartie,@numClick,@valClick);";
+            string selectClick = "SELECT * FROM gameh WHERE dateHeure = (SELECT dateHeure FROM gameh ORDER BY dateHeure DESC LIMIT 1);";
+                DataTable tab = this.getLigne(selectClick);
+            var idPartie = 0;
+            foreach (DataRow row in tab.Rows)
+            {
+                idPartie= (int)row["numPartie"];
+                Console.WriteLine("le num de la partie mec quoicoubeh : " + row["numPartie"]);
+            }
+
             foreach (var kvp1 in args)
             {
+             
+                var parameters = new Dictionary<string, object>();
+
+               
+                parameters.Add("numPartie", idPartie);
+
+                foreach (var kvp2 in kvp1.Value)
+                {
+                    parameters.Add(kvp2.Key, kvp2.Value);
+                }
+
                 Console.WriteLine("Key = {0}, Inner Dict:", kvp1.Key);
-                this.Insert(insertSql,kvp1.Value);
-        
+
+            
+                this.Insert(insertSql, parameters);
             }
+
+
+            foreach (var kvp1 in args)
+            {
+                foreach (var kvp2 in kvp1.Value)
+                {
+                    Console.WriteLine("Val : "+kvp2.Value);
+
+                }
+
+            }
+
 
         }
     }

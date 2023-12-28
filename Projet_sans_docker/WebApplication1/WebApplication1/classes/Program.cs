@@ -29,7 +29,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
     options.Cookie.SameSite = SameSiteMode.None;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Permet l'envoi sur une connexion non sécurisée (HTTP)
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; 
     options.Cookie.Path = "/";
 });
 

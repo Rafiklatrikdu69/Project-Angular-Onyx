@@ -40,20 +40,20 @@ namespace WebApplication1.Controllers
 
         }
         [HttpPost("getPartieByDate")]
-        public async Task<ActionResult<List<ClickPartie>>> getPartieByDate([FromBody] User pseudo)
+        public List<ClickPartie> getPartieByDate([FromBody] User pseudo)
         {
-            Console.WriteLine("Le pseudo : " +  pseudo.ID);
-            _pseudo = pseudo.pseudo;
-            var dictionnaireSelectPseudo = new Dictionary<string, object>();
-            dictionnaireSelectPseudo.Add("pseudo", _pseudo);
-            //Console.WriteLine("La session" + UserController.sessionStatic.GetString("pseudo"));
-            var select =  this._gameDAO.getPartieByDate(dictionnaireSelectPseudo);
-            Console.WriteLine(select.numPartie);
-            Console.WriteLine("pseudo de la partie : "+select.pseudo);
-            var  idPartie = (int)select.numPartie;
+            //Console.WriteLine("Le pseudo : " +  pseudo.ID);
+            //_pseudo = pseudo.pseudo;
+            //var dictionnaireSelectPseudo = new Dictionary<string, object>();
+            //dictionnaireSelectPseudo.Add("pseudo", _pseudo);
+            ////Console.WriteLine("La session" + UserController.sessionStatic.GetString("pseudo"));
+            //var select =   this._gameDAO.getPartieByDate(dictionnaireSelectPseudo);
+            //Console.WriteLine(select.numPartie);
+            //Console.WriteLine("pseudo de la partie : "+select.pseudo);
+            //var  idPartie = (int)select.numPartie;
             var dictionnaire = new Dictionary<string, object>();//pour passer en parametre les arguments 
-            dictionnaire.Add("id", idPartie);
-   
+            //dictionnaire.Add("id", idPartie);
+            dictionnaire.Add("pseudo", "Rafik");
             List<ClickPartie> listGame =  this._gameDAO.getAllClicks(dictionnaire);
            
 
@@ -76,23 +76,22 @@ namespace WebApplication1.Controllers
         }
         [HttpPost("insertInfoclick")]
 
-        public void insertInfoClicks([FromBody] ClickPartie[] click)
+        public  void insertInfoClicks([FromBody] ClickPartie[] click)
         {
 
 
             Dictionary<string,object> dic = new Dictionary<string, object> ();
           
-            dic.Add("pseudo", _pseudo);
-         var select = this._gameDAO.getPartieByDate( dic);
-                     var idPartie = (int)select.numPartie;
-                        string insertSql = "INSERT INTO gamed (numPartie,numClick,valClickchrono) VALUES(@numPartie,@numClick,@valClick)";
+         //   dic.Add("pseudo", _pseudo);
+         //var select =   this._gameDAO.getPartieByDate( dic);
+         //            var idPartie = (int)select.numPartie;
+                        //string insertSql = "INSERT INTO gamed (numPartie,numClick,valClickchrono) VALUES(@numPartie,@numClick,@valClick)";
             Dictionary<int, Dictionary<string, object>> args = new Dictionary<int, Dictionary<string, object>>();
             for (int i = 0; i < click.Length; i++)
             {
                 Dictionary<string, object> dico = new Dictionary<string, object>();
                 Console.WriteLine("num click : " + click[i].numClick);
                 Console.WriteLine("val Chrono" + click[i].valClickChrono);
-                dico.Add("numPartie", idPartie);
                 dico.Add("numClick", click[i].numClick);
                 dico.Add("valClick", click[i].valClickChrono);
                 args.Add(i, dico);

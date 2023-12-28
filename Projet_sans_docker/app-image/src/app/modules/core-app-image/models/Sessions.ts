@@ -12,10 +12,10 @@ export class Sessions{
     public   verifsession(data:string,router:Router){
 
     
-            if(data==="pas de session !"){
+            if(data==="pas de session "){
                 
-                alert("il ya pas de session !")
-                router.navigate(['/app-form-connexion'])
+                //alert("il ya pas de session !")
+                router.navigate(['/app-authentification'])
             }else{
                  
             }

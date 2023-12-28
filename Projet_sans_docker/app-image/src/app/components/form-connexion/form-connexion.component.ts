@@ -66,9 +66,9 @@ export class FormConnexionComponent {
               // console.log(data)
             });
             
-            this.userService.getSessionPseudo().subscribe(data=>{
-              alert(data);
-            });
+            // this.userService.getSessionPseudo().subscribe(data=>{
+            //   alert(data);
+            // });
          //   this.userService.getSessionPseudo().subscribe();
           }
         }
