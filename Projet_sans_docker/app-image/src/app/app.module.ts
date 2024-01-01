@@ -25,6 +25,7 @@ import {
   MatDialogRef,
  
 } from '@angular/material/dialog';
+import { MatSortModule } from '@angular/material/sort';
 @NgModule({
   declarations: [
     
@@ -42,6 +43,7 @@ import {
     MatPaginatorModule,
     MatInputModule, 
     MatTableModule,
+    MatSortModule,
     // MatDialogTitle,
     // MatDialogContent,
     // MatDialogActions,

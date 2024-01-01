@@ -142,5 +142,29 @@ namespace WebApplication1.Models
             }
             return null;
         }
+        public List<Game> getAllPartiesPseudo(Dictionary<string,object> args)
+        {
+            List<Game> listeGame = new List<Game>();
+            string sql = "SELECT * FROM gameh WHERE pseudo =@pseudo";
+            var tab = this.getLignes(sql,args);
+            foreach(DataRow row in tab.Rows)
+            {
+                Game g = new Game(Convert.ToInt32(row["numPartie"]), row["pseudo"].ToString(), row["valMeilleurChrono"], row["valMoyenneChrono"], row["dateHeure"].ToString());
+                listeGame.Add(g);
+            }
+            return listeGame;
+        }
+        public List<Game> getAllParties()
+        {
+            List<Game> listeGame = new List<Game>();
+            string sql = "SELECT * FROM gameh";
+            var tab = this.getLignes(sql);
+            foreach (DataRow row in tab.Rows)
+            {
+                Game g = new Game(Convert.ToInt32(row["numPartie"]), row["pseudo"].ToString(), row["valMeilleurChrono"], row["valMoyenneChrono"], row["dateHeure"].ToString());
+                listeGame.Add(g);
+            }
+            return listeGame;
+        }
     }
 }
