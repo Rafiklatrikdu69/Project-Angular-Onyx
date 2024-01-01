@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Click } from '../models/Click';
+import { GameJoueur } from '../models/GameJoueur';
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +35,9 @@ export class GameService {
     const data = { id: 1, pseudo: pseudo };
     console.log(data);
     return this.http.post("https://localhost:7289/api/Game/getValMoyenneClick", data, { responseType: "text" });
+  }
+  public getPartiesJoueur(pseudo:string){
+    const data = {id:"1",pseudo:pseudo}
+    return this.http.post<GameJoueur[]>("https://localhost:7289/api/Game/getPartiesJoueur",data,{ responseType: "json" })
   }
 }

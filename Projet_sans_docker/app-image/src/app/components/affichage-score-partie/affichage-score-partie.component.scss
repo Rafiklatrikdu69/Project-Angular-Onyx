@@ -6,7 +6,12 @@
   padding-right: 24px;
   text-align: center;
 }
-
+.last-played-row{
+  background-color: #5cb0db;
+}
+.mat-row:nth-child(even){
+  background-color: #e4f0ec;
+}
 .mat-column-numClick{
   padding-left: 16px;
   font-size: 20px;
