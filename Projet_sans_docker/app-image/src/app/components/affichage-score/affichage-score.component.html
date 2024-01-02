@@ -1,1 +1,27 @@
 <p>affichage-score works!</p>
+
+<div>
+    <table mat-table [dataSource]="dataSourceAllParties"  matSort (matSortChange)="announceSortChange($event)"  class="mat-elevation-z8 table"  >
+      
+      <ng-container matColumnDef="numPartie">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> .No </th>
+        <td mat-cell *matCellDef="let element"> {{element.numPartie}} </td>
+      </ng-container>
+      
+      
+      <ng-container matColumnDef="valMoyenneChrono">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> chrono moyen </th>
+        <td mat-cell *matCellDef="let element" > {{element.valMoyenneChrono}} </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsAllParties"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsAllParties;" [ngClass]="{'last-played-row':  row.numPartie == lastPlayedIndex }"></tr>
+      
+    </table>
+    <div>
+      <mat-paginator
+      [length]="this.parties.length"
+      [pageSize]="4"
+      [pageSizeOptions]="[2, 6, 9]"
+      (page)="OnPageChange($event)"
+      ></mat-paginator>
+    </div>

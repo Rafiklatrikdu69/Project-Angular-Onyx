@@ -40,4 +40,9 @@ export class GameService {
     const data = {id:"1",pseudo:pseudo}
     return this.http.post<GameJoueur[]>("https://localhost:7289/api/Game/getPartiesJoueur",data,{ responseType: "json" })
   }
+
+  public getAllPartie(){
+    return this.http.get<GameJoueur[]>("https://localhost:7289/api/Game/getParties")
+  }
+
 }

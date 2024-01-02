@@ -51,12 +51,20 @@ export class JeuComponent {
 
     let img = document.getElementById('img');
     img?.setAttribute('src',this.myPix[this.randomNumber]); 
-    img!.style.position = 'absolute';
-      if(!this.tabPositionImage.includes(document.body.clientHeight * Math.random()+document.body.clientWidth * Math.random())){
-      img!.style.top = document.body.clientHeight * Math.random() + 'px';
-      img!.style.left = document.body.clientWidth * Math.random() + 'px';
-      this.tabPositionImage.push(document.body.clientHeight * Math.random()+document.body.clientWidth * Math.random())
-    }
+    //il faut changer le random pour pas deborder de la page 
+    document.addEventListener("DOMContentLoaded", function () {
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      alert(screenHeight)
+      const randomX = Math.floor(Math.random() * (screenWidth));
+      const randomY = Math.floor(Math.random() * (screenHeight));
+      img!.style.position = 'absolute';
+      img!.style.top = randomY + 'px';
+      img!.style.left = randomX + 'px';
+    
+    });
+  
+  
   }
   ms: any = '0' + 0;
   sec: any = '0' + 0;
@@ -131,12 +139,18 @@ export class JeuComponent {
 
       let img = document.getElementById('img');
       img?.setAttribute('src', this.image());
-      img!.style.position = 'absolute';
-      if(!this.tabPositionImage.includes(document.body.clientHeight * Math.random()+document.body.clientWidth * Math.random())){
-        img!.style.top = document.body.clientHeight * Math.random() + 'px';
-        img!.style.left = document.body.clientWidth * Math.random() + 'px';
-        this.tabPositionImage.push(document.body.clientHeight * Math.random()+document.body.clientWidth * Math.random())
-      }
+      document.addEventListener("DOMContentLoaded", function () {
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        alert(screenHeight)
+        alert(screenWidth)
+        const randomX = Math.floor(Math.random() * (screenHeight));
+        const randomY = Math.floor(Math.random() * (screenWidth));
+        img!.style.position = 'absolute';
+        img!.style.top = randomY + 'px';
+        img!.style.left = randomX + 'px';
+      
+      });
       this.previousClickTime = currentTime;
       
     }
