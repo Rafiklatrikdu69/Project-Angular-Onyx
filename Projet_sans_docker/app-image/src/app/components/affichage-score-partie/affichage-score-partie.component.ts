@@ -34,8 +34,8 @@ export interface PeriodicElement {
 export class AffichageScorePartieComponent {
   clicks: Click[] = [];
   displayedColumns: string[] = ['numPartie', 'numClick', 'valClickChrono'];
-  displayedColumnsParties: string[] = ['numPartie', 'pseudo', 'valMeilleurChrono','valMoyenneChrono'];
-  displayedColumnsAllParties: string[] = ['numPartie', 'pseudo', 'valMeilleurChrono','valMoyenneChrono'];
+  displayedColumnsParties: string[] = ['id','numPartie', 'pseudo', 'valMeilleurChrono','valMoyenneChrono'];
+  displayedColumnsAllParties: string[] = ['id','numPartie', 'pseudo', 'valMeilleurChrono','valMoyenneChrono'];
   
 
   public pageSlice!: Click[];
@@ -152,6 +152,7 @@ export class AffichageScorePartieComponent {
         if (finIndex > this.PartieJoueur.length) {
           finIndex = this.PartieJoueur.length;
         }
+        
         this.pageSliceParties = this.PartieJoueur.slice(debut, finIndex);
         this.dataSourceParties = this.pageSliceParties;
         this.dataSourceParties = new MatTableDataSource(this.pageSliceParties);

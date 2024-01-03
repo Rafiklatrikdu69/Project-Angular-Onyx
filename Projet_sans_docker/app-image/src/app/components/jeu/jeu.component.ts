@@ -31,40 +31,37 @@ export class JeuComponent {
   tabValeurChrono = []
   tabClicks:Click[] = []
   session!:string
-
+  
   constructor(private userService:UserService,private router:Router,private gameService:GameService){
     
   }
   ngOnInit(): void {
     
     this.userService.getNbClick().subscribe(data=>{
-     
+      
       let n = data;
       this.nbClickMax= Object.assign(n);
     });
-      this.userService.getSessionPseudo().subscribe(data=>{
-        console.log(data)
-       let session = new Sessions()
-       session.verifsession(data,this.router)
-       this.session = data
+    this.userService.getSessionPseudo().subscribe(data=>{
+      console.log(data)
+      let session = new Sessions()
+      session.verifsession(data,this.router)
+      this.session = data
     });
-
+    
     let img = document.getElementById('img');
     img?.setAttribute('src',this.myPix[this.randomNumber]); 
     //il faut changer le random pour pas deborder de la page 
     document.addEventListener("DOMContentLoaded", function () {
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
-      alert(screenHeight)
-      const randomX = Math.floor(Math.random() * (screenWidth));
-      const randomY = Math.floor(Math.random() * (screenHeight));
+      const randomX = Math.floor(Math.random() * (screenHeight - img!.clientWidth));
+      const randomY = Math.floor(Math.random() * (screenWidth -img!.clientHeight));
       img!.style.position = 'absolute';
       img!.style.top = randomY + 'px';
       img!.style.left = randomX + 'px';
-    
+      
     });
-  
-  
   }
   ms: any = '0' + 0;
   sec: any = '0' + 0;
@@ -75,8 +72,7 @@ export class JeuComponent {
   nbClick = 0;
   previousClickTime = Date.now();
   partieTerminer = false;
-  start() {
-    
+  start() {  
     this.nbClick++;
     if(this.nbClick==1){
       let c = new Click(12,this.nbClick,0);
@@ -84,7 +80,7 @@ export class JeuComponent {
     }
     if(this.nbClick==this.nbClickMax){
       this.partieTerminer = true;
-
+      
       const currentDate = new Date();
       const formattedDate = currentDate.toISOString().slice(0, 19).replace("T", " ");
       this.stop();
@@ -92,9 +88,9 @@ export class JeuComponent {
       const avgVal = sumVal / this.tabValMeilleurChrono.length;
       this.gameService.insertDataPartie(this.session,Math.min(...this.tabValMeilleurChrono),avgVal, formattedDate).subscribe();
       
-    this.gameService.insertInfoClick(this.tabClicks).subscribe()
+      this.gameService.insertInfoClick(this.tabClicks).subscribe()
       this.reloadCurrent()
-     
+      
     }   
     if (!this.running) {
       this.previousClickTime = Date.now();
@@ -129,14 +125,14 @@ export class JeuComponent {
       
       this.tab.push(`Temps entre les clics : ${timeDifference} ms`);
       let c = new Click(12,this.nbClick,timeDifference);
-  
+      
       this.tabClicks.push(c);
       this.tabValMeilleurChrono.push(timeDifference)
       this.resetTimer();
-
+      
       
       this.randomNumber = Math.floor(Math.random() * this.myPix.length)
-
+      
       let img = document.getElementById('img');
       img?.setAttribute('src', this.image());
       document.addEventListener("DOMContentLoaded", function () {
@@ -144,12 +140,12 @@ export class JeuComponent {
         const screenHeight = window.innerHeight;
         alert(screenHeight)
         alert(screenWidth)
-        const randomX = Math.floor(Math.random() * (screenHeight));
-        const randomY = Math.floor(Math.random() * (screenWidth));
+        const randomX = Math.floor(Math.random() * (screenHeight - img!.clientWidth));
+        const randomY = Math.floor(Math.random() * (screenWidth -img!.clientHeight));
         img!.style.position = 'absolute';
         img!.style.top = randomY + 'px';
         img!.style.left = randomX + 'px';
-      
+        
       });
       this.previousClickTime = currentTime;
       
@@ -178,7 +174,6 @@ export class JeuComponent {
     this.hr = '0' + 0;
   }
   reloadComponent(self:boolean,urlToNavigateTo ?:string){
-    //skipLocationChange:true means dont update the url to / when navigating
     console.log("Current route I am on:",this.router.url);
     const url=self ? this.router.url :urlToNavigateTo;
     this.router.navigateByUrl('/',{skipLocationChange:true}).then(()=>{

@@ -6,6 +6,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { Click } from '../../modules/core-app-image/models/Click';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { UserService } from '../../modules/core-app-image/services/user.service';
 
 @Component({
   selector: 'app-affichage-score',
@@ -13,8 +14,7 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrl: './affichage-score.component.scss'
 })
 export class AffichageScoreComponent {
-
-  displayedColumnsAllParties: string[] = ['numPartie','valMoyenneChrono'];
+  displayedColumnsAllParties: string[] = ['numPartie','valMoyenneChrono','link'];
   
   public pageSlice!: GameJoueur[];
   
@@ -22,27 +22,29 @@ export class AffichageScoreComponent {
   
   @ViewChild(MatSort) sort!: MatSort;
   parties : GameJoueur[] = []
-  
-  constructor(private gameService: GameService,private _liveAnnouncer: LiveAnnouncer) {}
+  nbPage!:number
+  constructor(private gameService: GameService,private _liveAnnouncer: LiveAnnouncer,private userService:UserService) {}
   
   
   lastPlayedIndex: number | null = null;
   ngOnInit(): void {
     console.log("Début !");
-    
+    this.userService.getResultPage().subscribe(data=>{
+      this.nbPage = Object.assign(data)
+    })
     setTimeout(()=>{
       this.gameService.getAllPartie().subscribe(data=>{
         this.parties = data.sort(
           (p1, p2) => 
           (p1.valMoyenneChrono > p2.valMoyenneChrono) ? 1 : (p1.valMoyenneChrono < p2.valMoyenneChrono) ? -1 : 0);
           console.log("parties : "+JSON.stringify(data))
-          this.pageSlice = this.parties.slice(0,5);
+          this.pageSlice = this.parties.slice(0,this.nbPage);
           this.dataSourceAllParties = new MatTableDataSource(this.pageSlice)
           console.log();
         })
       },200)
       
-      
+     
       
       
     }

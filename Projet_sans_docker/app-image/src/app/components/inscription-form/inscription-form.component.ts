@@ -22,7 +22,7 @@ export class InscriptionFormComponent {
   }
   
   onSubmit() :void{
-    // this.userService.setSession().subscribe();
+
     if(this.form.pseudo!=undefined){
       
       this.userService.checkUserExists(this.form.pseudo).subscribe(data=>{
