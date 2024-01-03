@@ -36,7 +36,7 @@ namespace WebApplication1.Controllers
 
        
         /// <summary>
-        /// Cette methode selectionne l'utilisateur dans la BD 
+        /// Cette methode selectionne l'utilisateur dans la BD   
         /// </summary>
         /// <param name="myObject"></param>
         /// <returns></returns>
@@ -145,6 +145,20 @@ namespace WebApplication1.Controllers
                 var data= JsonSerializer.Deserialize<DataJson>(json);
                 Console.WriteLine(data.nbClick);
                 return data.nbClick;
+            }
+
+        }
+
+        [HttpGet("json-page")]
+        public int pagination()
+        {
+            Console.WriteLine("Lecture du fichier : ");
+            using (StreamReader r = new StreamReader("C:\\Users\\Rafik\\Documents\\Project-Angular-Onyx\\Projet_sans_docker\\WebApplication1\\WebApplication1\\data.json"))
+            {
+                string json = r.ReadToEnd();
+                var data = JsonSerializer.Deserialize<DataJson>(json);
+                Console.WriteLine(data.nbResultats);
+                return data.nbResultats;
             }
 
         }

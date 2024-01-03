@@ -73,10 +73,6 @@ namespace WebApplication1.Controllers
 
             Dictionary<string,object> dic = new Dictionary<string, object> ();
           
-         //   dic.Add("pseudo", _pseudo);
-         //var select =   this._gameDAO.getPartieByDate( dic);
-         //            var idPartie = (int)select.numPartie;
-                        //string insertSql = "INSERT INTO gamed (numPartie,numClick,valClickchrono) VALUES(@numPartie,@numClick,@valClick)";
             Dictionary<int, Dictionary<string, object>> args = new Dictionary<int, Dictionary<string, object>>();
             for (int i = 0; i < click.Length; i++)
             {
@@ -131,6 +127,19 @@ namespace WebApplication1.Controllers
             if (listePartie != null)
             {
                 return listePartie;
+            }
+            return null;
+        }
+        [HttpPost("allClickPartie")]
+        public List<ClickPartie> ClickPartie([FromBody] ClickPartie click)
+        {
+            Dictionary<string, object> args = new Dictionary<string, object>();
+            args.Add("numPartie", click.numPartie);
+            var clickPartie = this._gameDAO.getAllClickPartie(args);
+            if(clickPartie!= null)
+            {
+                Console.WriteLine(clickPartie[0].numPartie);
+                return clickPartie;
             }
             return null;
         }
