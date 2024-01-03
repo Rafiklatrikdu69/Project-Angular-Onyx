@@ -26,6 +26,7 @@ import {
  
 } from '@angular/material/dialog';
 import { MatSortModule } from '@angular/material/sort';
+import { AffichageClickDetailComponent } from './components/affichage-click-detail/affichage-click-detail.component';
 @NgModule({
   declarations: [
     
@@ -37,7 +38,8 @@ import { MatSortModule } from '@angular/material/sort';
     JeuComponent,
     AffichageScoreComponent,
     AffichageScorePartieComponent,
-    AuthentificationComponent
+    AuthentificationComponent,
+    AffichageClickDetailComponent
   ],
   imports: [
     MatPaginatorModule,

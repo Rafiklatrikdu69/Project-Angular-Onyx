@@ -10,16 +10,16 @@ import { GameJoueur } from '../models/GameJoueur';
 export class GameService {
   
   constructor(private http: HttpClient) { }
-  url="https://localhost:7289/api/Game/";
+  private url="https://localhost:7289/api/Game";
   insertDataPartie(pseudo:string,valMeilleurChrono:any,valMoyenneChrono:any,dateHeure:string){
     const data ={numPartie:1,pseudo:pseudo,valMeilleurChrono:valMeilleurChrono,valMoyenneChrono:valMoyenneChrono,dateHeure:dateHeure}
     
-    return  this.http.post("https://localhost:7289/api/Game/partie",data,{responseType:"text"})
+    return  this.http.post(this.url+"/partie",data,{responseType:"text"})
   }
   
   public  async getAllClick(pseudo:string){
     const data = {id:"1",pseudo:pseudo}
-    return this.http.post<Click[]>("https://localhost:7289/api/Game/getPartieByDate",data,{responseType:"json"})
+    return this.http.post<Click[]>(this.url+"/getPartieByDate",data,{responseType:"json"})
   }
   
   public  insertInfoClick(clicks:Click[]){
@@ -28,21 +28,28 @@ export class GameService {
     }
     
     const data = JSON.stringify(clicks);
-    return this.http.post("https://localhost:7289/api/Game/insertInfoclick",data,httpOptions)
+    return this.http.post(this.url+"/insertInfoclick",data,httpOptions)
     
   }
   public async getClickMoyen(pseudo: string) {
     const data = { id: 1, pseudo: pseudo };
     console.log(data);
-    return this.http.post("https://localhost:7289/api/Game/getValMoyenneClick", data, { responseType: "text" });
+    return this.http.post(this.url+"/getValMoyenneClick", data, { responseType: "text" });
   }
   public getPartiesJoueur(pseudo:string){
     const data = {id:"1",pseudo:pseudo}
-    return this.http.post<GameJoueur[]>("https://localhost:7289/api/Game/getPartiesJoueur",data,{ responseType: "json" })
+    return this.http.post<GameJoueur[]>(this.url+"/getPartiesJoueur",data,{ responseType: "json" })
   }
-
+  
   public getAllPartie(){
-    return this.http.get<GameJoueur[]>("https://localhost:7289/api/Game/getParties")
+    return this.http.get<GameJoueur[]>(this.url+"/getParties")
   }
-
+  public getAllClickPartie(click:Click){
+    const data = JSON.stringify(click)
+    const httpOptions = {
+      headers: new HttpHeaders({'Content-Type': 'application/json'})
+    }
+    return this.http.post<Click[]>(this.url+"/allClickPartie",data,httpOptions)
+      
+  }
 }

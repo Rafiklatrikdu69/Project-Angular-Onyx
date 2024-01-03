@@ -166,5 +166,18 @@ namespace WebApplication1.Models
             }
             return listeGame;
         }
+          public List<ClickPartie> getAllClickPartie( Dictionary<string,object> args)
+        {
+            List<ClickPartie> listeClick = new List<ClickPartie>();
+            string sql = "SELECT * FROM gamed where numPartie=@numPartie";
+            var tab = this.getLignes(sql,args);
+            foreach (DataRow row in tab.Rows)
+            {
+                ClickPartie c = new ClickPartie(Convert.ToInt32(row["numPartie"]), row["numClick"].ToString(), row["valClickChrono"]);
+                listeClick.Add(c);
+                
+            }
+            return listeClick;
+        }
     }
 }

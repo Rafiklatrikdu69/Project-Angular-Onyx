@@ -8,17 +8,17 @@ import { catchError, map, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  private url = "User";
+  private url = "https://localhost:7289/api/User";
 
   constructor(private http: HttpClient) { 
 
   }
   public createTable(){
-    return this.http.get('https://localhost:7289/api/Test');
+    return this.http.get(this.url+'/Test');
   }
     public insertTable(pseudo:string){
       const myData = { id: '1', pseudo: pseudo};
-    return  this.http.post("https://localhost:7289/api/User/userInsert", myData);
+    return  this.http.post(this.url+"/userInsert", myData);
    }
   public getUser(): Observable<User[]> {
     return this.http.get<User[]>('https://localhost:7289/api/User',{
@@ -34,33 +34,25 @@ export class UserService {
   public checkUserExists(pseudo:string) {
 
     const myData = { id: '1', pseudo: pseudo };
-    return  this.http.post("https://localhost:7289/api/User/userSelect", myData,{responseType: 'text'});
+    return  this.http.post(this.url+"/userSelect", myData,{responseType: 'text'});
 }
   public getNbClick(){
-    return this.http.get("https://localhost:7289/api/User/json");
+    return this.http.get(this.url+"/json");
   }
-//  getSession(): Observable<string> {
-//   return this.http.post<string>('https://localhost:7289/api/User/get-session-pseudo', { responseType: 'text' })
-//   .pipe(
-//     map(response => response), // Utilisez map pour traiter la réponse
-//     catchError(error => {
-//       console.error('Error getting session:', error);
-//       return throwError(error);
-//     })
-//   );
-// }
-
+public getResultPage(){
+  return this.http.get(this.url+"/json-page");
+}
 setSessionPseudo(pseudo: string) {
   const myData = { id: "1", pseudo: pseudo };
-  return this.http.post("https://localhost:7289/api/User/session", myData,{withCredentials:true} );
+  return this.http.post(this.url+"/session", myData,{withCredentials:true} );
 }
 
 getSessionPseudo() {
-  return this.http.get('https://localhost:7289/api/User/test-session',{ withCredentials: true, responseType: 'text' });
+  return this.http.get(this.url+'/test-session',{ withCredentials: true, responseType: 'text' });
 }
 
 public deconnexion(){
-  return this.http.delete('https://localhost:7289/api/User/deconnexion');
+  return this.http.delete(this.url+'/deconnexion');
 }
 
 

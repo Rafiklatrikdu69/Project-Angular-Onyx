@@ -8,6 +8,7 @@ import { JeuComponent } from './components/jeu/jeu.component';
 import { AffichageScoreComponent } from './components/affichage-score/affichage-score.component';
 import { AffichageScorePartieComponent } from './components/affichage-score-partie/affichage-score-partie.component';
 import { AuthentificationComponent} from './components/authentification/authentification.component';
+import { AffichageClickDetailComponent } from './components/affichage-click-detail/affichage-click-detail.component';
 const routes: Routes = [{
   path: '', component: HomeComponent
 },
@@ -20,6 +21,9 @@ const routes: Routes = [{
 },
 {
   path:'app-authentification',component:AuthentificationComponent
+},
+{
+  path:'affichage-detail-click',component:AffichageClickDetailComponent
 }];
 
 @NgModule({
