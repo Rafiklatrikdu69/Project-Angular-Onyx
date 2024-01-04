@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { trigger, state, style, transition, animate, group } from '@angular/animations';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-authentification',
@@ -22,19 +23,19 @@ import { trigger, state, style, transition, animate, group } from '@angular/anim
   ]
 })
 export class AuthentificationComponent {
-  
- 
+  id!:any
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    console.log(this.id = this.route.snapshot.paramMap.get('id'))
+  }
+ constructor(private route: ActivatedRoute){}
   isOpened: boolean=false;
   isOpen!:any ;
-  // isOpen(){
-  //   return this.isOpened;
-  // }
-  
-  // toggle(){
-  //   this.isOpened=!this.isOpened;
-  // }
+ 
   toggle() {
     this.isOpen = !this.isOpen;
     console.log(this.isOpen)
+
   }
 }

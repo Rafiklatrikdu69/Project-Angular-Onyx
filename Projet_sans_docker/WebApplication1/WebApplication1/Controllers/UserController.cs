@@ -109,6 +109,7 @@ namespace WebApplication1.Controllers
         {
             var httpContext = httpContextAccessor.HttpContext;
             httpContext.Session.Remove("pseudo");
+            Console.WriteLine("Session supprimer");
         }
 
         [HttpGet("test-session")]

@@ -20,7 +20,7 @@ const routes: Routes = [{
   path:'affichage-score-partie', component:AffichageScorePartieComponent
 },
 {
-  path:'app-authentification',component:AuthentificationComponent
+  path:'app-authentification/:id',component:AuthentificationComponent
 },
 {
   path:'affichage-detail-click',component:AffichageClickDetailComponent

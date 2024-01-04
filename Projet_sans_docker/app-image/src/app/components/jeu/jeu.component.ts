@@ -45,23 +45,22 @@ export class JeuComponent {
     this.userService.getSessionPseudo().subscribe(data=>{
       console.log(data)
       let session = new Sessions()
-      session.verifsession(data,this.router)
+      session.verifsession(data,this.router,"app-authentification","app-jeu")
       this.session = data
     });
     
     let img = document.getElementById('img');
     img?.setAttribute('src',this.myPix[this.randomNumber]); 
     //il faut changer le random pour pas deborder de la page 
-    document.addEventListener("DOMContentLoaded", function () {
-      const screenWidth = window.innerWidth;
-      const screenHeight = window.innerHeight;
-      const randomX = Math.floor(Math.random() * (screenHeight - img!.clientWidth));
-      const randomY = Math.floor(Math.random() * (screenWidth -img!.clientHeight));
+   
+      const randomX = Math.random() * (500);
+ 
+      const randomY = Math.random() * (300);
+  
       img!.style.position = 'absolute';
       img!.style.top = randomY + 'px';
       img!.style.left = randomX + 'px';
-      
-    });
+
   }
   ms: any = '0' + 0;
   sec: any = '0' + 0;
@@ -135,18 +134,15 @@ export class JeuComponent {
       
       let img = document.getElementById('img');
       img?.setAttribute('src', this.image());
-      document.addEventListener("DOMContentLoaded", function () {
-        const screenWidth = window.innerWidth;
-        const screenHeight = window.innerHeight;
-        alert(screenHeight)
-        alert(screenWidth)
-        const randomX = Math.floor(Math.random() * (screenHeight - img!.clientWidth));
-        const randomY = Math.floor(Math.random() * (screenWidth -img!.clientHeight));
+     
+        const randomX = Math.random() * (500);
+ 
+        const randomY = Math.random() * (300);
         img!.style.position = 'absolute';
         img!.style.top = randomY + 'px';
         img!.style.left = randomX + 'px';
         
-      });
+   
       this.previousClickTime = currentTime;
       
     }

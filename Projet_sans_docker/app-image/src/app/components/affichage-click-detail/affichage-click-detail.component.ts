@@ -23,11 +23,7 @@ ngOnInit(): void {
       this.clicks = data
       this.pageSlice = this.clicks.slice(0, 2);
       this.dataSource = this.pageSlice;
-      console.log(data)
     })
- 
- 
-  console.log(history.state['id'])
 }
 
 OnPageChange(event: PageEvent): void {

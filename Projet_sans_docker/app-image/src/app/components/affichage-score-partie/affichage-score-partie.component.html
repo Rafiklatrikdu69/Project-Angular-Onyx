@@ -1,57 +1,21 @@
- <body>
-  
 
 
- <div class="flex-container">
-  
+
+ <div class="flex">
   <div>
-    <h1>Informations sur vos clicks </h1>
-    <table mat-table [dataSource]="dataSource"  class="mat-elevation-z8">
-      <ng-container matColumnDef="numPartie">
-        <th mat-header-cell *matHeaderCellDef> numéro de partie </th>
-        <td mat-cell *matCellDef="let element"> {{element.numPartie}} </td>
-      </ng-container>
-      
-      <ng-container matColumnDef="numClick">
-        <th mat-header-cell *matHeaderCellDef> numéro click </th>
-        <td mat-cell *matCellDef="let element"> {{element.numClick}} </td>
-      </ng-container>
-      
-      <ng-container matColumnDef="valClickChrono">
-        <th mat-header-cell *matHeaderCellDef> Chrono </th>
-        <td mat-cell *matCellDef="let element"> {{element.valClickChrono}} ms</td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]="{'th': true}"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"   [ngClass]="{'tr': true}"></tr>
-    </table>
-    <div>
-      <mat-paginator
-      [length]="this.clicks.length"
-      [pageSize]="2"
-      [pageSizeOptions]="[2, 6, 9]"
-      (page)="OnPageChange($event)"
-      ></mat-paginator>
-    </div>
-  </div>
-  <div class="btn-donate">
-    Le Chrono de votre partie Moyen : {{this.clickMoyen}} 
-  </div>
-  
-  
-  <div>
-    <h1>Classement de votre partie</h1>
+    <!-- <h1>Classement de votre partie</h1> -->
+    <div class="scrollit">
     <table mat-table [dataSource]="dataSourceParties"  matSort (matSortChange)="announceSortChange($event)"  class="mat-elevation-z8 table"  >
      
     
       <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> .No </th>
-        <td mat-cell *matCellDef="let element; let i = index">{{i+1 }}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Classement </th>
+        <td mat-cell *matCellDef="let element; let i = index;" >
+          <div *ngIf="i == 0;else div2">{{1}} er</div> 
+          <ng-template #div2> {{i+1 }} éme</ng-template> 
+         </td>
       </ng-container>
 
-      <ng-container matColumnDef="numPartie">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> .No </th>
-        <td mat-cell *matCellDef="let element"> {{element.numPartie}} </td>
-      </ng-container>
    
       <ng-container matColumnDef="pseudo">
         <th mat-header-cell *matHeaderCellDef> pseudo </th>
@@ -68,23 +32,16 @@
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumnsParties"  [ngClass]="{'th': true}"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumnsParties;"  [ngClass]="{'last-played-row':  row.numPartie == lastPlayedIndex, 'tr': row.numPartie != lastPlayedIndex }"></tr>
-
     </table>
-    <div>
-      <mat-paginator
-      [length]="this.PartieJoueur.length"
-      [pageSize]="4"
-      [pageSizeOptions]="[2, 6, 9]"
-      (page)="OnPageChangePartie($event)"
-      ></mat-paginator>
-    </div>
   </div>
-  <div> <h1>Classement de toutes les parties</h1></div>
+  </div>
+  <!-- <div> <h1>Classement de toutes les parties</h1></div> -->
+  <div>
     <div class="scrollit">
      
       <table mat-table [dataSource]="dataSourceAllParties"   class="mat-elevation-z8 table"  >
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef>  </th>
+          <th mat-header-cell *matHeaderCellDef> Classement </th>
           <td mat-cell *matCellDef="let element; let i = index;" >
            <div *ngIf="i == 0;else div2">{{1}} er</div> 
            <ng-template #div2> {{i+1 }} éme</ng-template> 
@@ -92,10 +49,7 @@
           
         </ng-container>
   
-        <ng-container matColumnDef="numPartie">
-          <th mat-header-cell *matHeaderCellDef> .No </th>
-          <td mat-cell *matCellDef="let element"> {{element.numPartie}} </td>
-        </ng-container>
+    
         
         <ng-container matColumnDef="pseudo">
           <th mat-header-cell *matHeaderCellDef> pseudo </th>
@@ -116,17 +70,43 @@
       </table>
     
   </div>
-  
-  
-  
 </div>
 
-<!-- <div>
-  <mat-paginator
-  [length]="this.PartieJoueur.length"
-  [pageSize]="4"
-  [pageSizeOptions]="[2, 6, 9]"
-  (page)="OnPageChangePartie($event)"
-  ></mat-paginator>
-</div> -->
-</body>
+<div>
+  <!-- <h1>Informations sur vos clicks </h1> -->
+  <table mat-table [dataSource]="dataSource"  class="mat-elevation-z8">
+    <ng-container matColumnDef="numPartie">
+      <th mat-header-cell *matHeaderCellDef> numéro de partie </th>
+      <td mat-cell *matCellDef="let element"> {{element.numPartie}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="numClick">
+      <th mat-header-cell *matHeaderCellDef> numéro click </th>
+      <td mat-cell *matCellDef="let element"> {{element.numClick}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="valClickChrono">
+      <th mat-header-cell *matHeaderCellDef> Chrono </th>
+      <td mat-cell *matCellDef="let element"> {{element.valClickChrono}} ms</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]="{'th': true}"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"   [ngClass]="{'tr': true}"></tr>
+  </table>
+  <div>
+    <mat-paginator
+    [length]="this.clicks.length"
+    [pageSize]="2"
+    [pageSizeOptions]="[2, 6, 9]"
+    (page)="OnPageChange($event)"
+    ></mat-paginator>
+  </div>
+</div>
+<div>
+  <div class="btn-donate">
+    Le Chrono Moyen de votre partie  : {{this.clickMoyen}} ms 
+  </div>
+</div>
+ </div>
+
+
+

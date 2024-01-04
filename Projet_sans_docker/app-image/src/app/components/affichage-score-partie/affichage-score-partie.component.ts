@@ -8,6 +8,8 @@ import {LiveAnnouncer} from '@angular/cdk/a11y';
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatSort, Sort, MatSortModule} from '@angular/material/sort';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { Sessions } from '../../modules/core-app-image/models/Sessions';
+import { Router } from '@angular/router';
 const ELEMENT_DATA: PeriodicElement[] = [
   {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
   {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
@@ -34,8 +36,8 @@ export interface PeriodicElement {
 export class AffichageScorePartieComponent {
   clicks: Click[] = [];
   displayedColumns: string[] = ['numPartie', 'numClick', 'valClickChrono'];
-  displayedColumnsParties: string[] = ['id','numPartie', 'pseudo', 'valMeilleurChrono','valMoyenneChrono'];
-  displayedColumnsAllParties: string[] = ['id','numPartie', 'pseudo', 'valMeilleurChrono','valMoyenneChrono'];
+  displayedColumnsParties: string[] = ['id', 'pseudo', 'valMeilleurChrono','valMoyenneChrono'];
+  displayedColumnsAllParties: string[] = ['id', 'pseudo', 'valMeilleurChrono','valMoyenneChrono'];
   
 
   public pageSlice!: Click[];
@@ -49,14 +51,19 @@ export class AffichageScorePartieComponent {
 
   @ViewChild(MatSort) sort!: MatSort;
   parties : GameJoueur[] = []
-  constructor(private gameService: GameService, private userService: UserService,private _liveAnnouncer: LiveAnnouncer) {}
+  constructor(private gameService: GameService, private userService: UserService,private _liveAnnouncer: LiveAnnouncer,private router:Router) {}
   
 
   clickedRows!:any
+  session!:any
   lastPlayedIndex: number | null = null;
   ngOnInit(): void {
     console.log("Début !");
+    
     this.userService.getSessionPseudo().subscribe(data => {
+      let session = new Sessions()
+      session.verifsession(data,this.router,"app-authentification","affichage-score-partie")
+      this.session = data
       this.click(data);
       setTimeout(() => {
         ( this.cMoyen(data))
@@ -70,7 +77,7 @@ export class AffichageScorePartieComponent {
               (p1.valMoyenneChrono > p2.valMoyenneChrono) ? 1 : (p1.valMoyenneChrono < p2.valMoyenneChrono) ? -1 : 0);data.sort(
                 (p1, p2) => 
                 (p1.valMoyenneChrono > p2.valMoyenneChrono) ? 1 : (p1.valMoyenneChrono < p2.valMoyenneChrono) ? -1 : 0);;
-          this.pageSliceParties = this.PartieJoueur.slice(0, 5);
+          this.pageSliceParties = this.PartieJoueur.slice(0, this.PartieJoueur.length);
           
           this.dataSourceParties = new MatTableDataSource(this.pageSliceParties);
           this.dataSourceParties.sort = this.sort;
@@ -99,7 +106,7 @@ export class AffichageScorePartieComponent {
             console.log("parties : "+JSON.stringify(data))
             this.dataSourceAllParties = new MatTableDataSource(this.parties.slice(0,this.parties.length))
             console.log();
-          })
+          })  
         },200)
         
         
@@ -109,7 +116,7 @@ export class AffichageScorePartieComponent {
     async cMoyen (data: string){
       console.log("data : "+data);
       this.clickMoyen = (await this.gameService.getClickMoyen(data)).subscribe(data=>{
-        this.clickMoyen = data;
+        this.clickMoyen = JSON.stringify(data);
       });
       
     }

@@ -1,26 +1,33 @@
 import { Component, HostListener } from '@angular/core';
+import { UserService } from '../../modules/core-app-image/services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrls: ['./home.component.scss'] 
 })
 export class HomeComponent {
-  beforeUnloadHandler = (event:any) => {
-    // Recommended
-    event.preventDefault();
-    
-    alert("vous vouler ")
-    event.returnValue = true;
-  };
-  
+  constructor(private userService: UserService, private router: Router) {}
+
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    window.addEventListener("beforeunload", this.beforeUnloadHandler);
+    let deco = document.getElementById('deco');
+    deco?.addEventListener('click', this.deco.bind(this));  
   }
-  @HostListener('window:beforeunload', ['$event'])
-  unloadHandler($event: Event): void {
-    
+
+  deco() {
+    this.userService.deconnexion().subscribe(() => {
+      console.log('Delete session !'); 
+    });
+     this.router.navigate(['/app-authentification','']);
+  }
+  @HostListener('window:unload', [ '$event' ])
+  unloadHandler(event:any) {
+ alert("jndjs")
+  }
+
+  @HostListener('window:beforeunload', [ '$event' ])
+  beforeUnloadHandler(event:any) {
+    alert("jndjs")
   }
 }

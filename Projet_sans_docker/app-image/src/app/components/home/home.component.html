@@ -1,17 +1,17 @@
 
-<!DOCTYPE html>
 
-
-    <div class="div">
- 
-
-        <button class="btn-donate" routerLink="/app-jeu">Entrez dans le jeu</button>
-        <button class="btn-donate"  routerLink="/affichage-score">Voir les scores</button>
-        <button class="btn-donate" routerLink="/app-authentification">S'authenfier</button>
-        <button class="btn-donate">Se deconnecter</button>
+<div class="div">
+    <button class="btn-donate" routerLink="/app-jeu"  >Entrez dans le jeu</button>
+    <button class="btn-donate" [routerLink]="['/affichage-score']" [state]="{ id:'affichage-score'}"  >Voir les scores</button>
+    <button class="btn-donate"   [routerLink]="['/app-authentification','app-jeu']" [state]="{ id:'app-jeu'}"> 
         
-        </div>
+     
+        S'authenfier</button>
+      
+    <button class="btn-donate" id="deco">Se deconnecter</button>
+</div>
+<div>
+    <a ></a>
+</div>
 
 
-
-    
