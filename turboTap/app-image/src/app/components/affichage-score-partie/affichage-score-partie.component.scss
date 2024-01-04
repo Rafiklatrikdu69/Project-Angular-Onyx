@@ -1,0 +1,144 @@
+.mat-column-numPartie {
+  width: 32px;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  text-align: center;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
+.last-played-row{
+  background-color: #5cb0db;
+}
+.last-played-row:hover{
+  cursor: pointer;
+  transition: all 500ms ease-in-out;
+  box-shadow: 5px 5px 2px 1px rgba(193, 193, 218, 0.2);
+
+}
+.mat-row:nth-child(even){
+  background-color: #e4f0ec;
+}
+.mat-column-numClick{
+  padding-left: 16px;
+  font-size: 20px;
+}
+table{
+border-collapse : separate;
+border-spacing :0px 1rem;
+border: 1px solid black;
+padding: 10px;
+margin: 25px 0;
+font-size: 0.9em;
+font-family: sans-serif;
+min-width: 400px;
+box-shadow: 0 0 20px rgba(28, 160, 237, 0.868);
+}
+
+
+.mat-column-valClickChrono {
+  font-style: italic;
+}
+
+
+.btn-donate{
+  color: white ;
+  max-height: 100px;
+  max-width: 100px;
+ 
+}
+.scrollit {
+  overflow:scroll;
+  height:300px;
+  width: auto;
+}
+
+
+  .tr:nth-child(2n){
+    border-radius: 10px;
+    transition: all 500ms ease-in-out;
+    background-color: rgba(172, 185, 186, 0.443);
+    
+  }
+
+  .tr:nth-child(2n +1){
+    border-radius: 10px;
+    transition: all 500ms ease-in-out;
+    background-color: rgba(233, 239, 239, 0.443);
+    
+  }
+ .tr:hover{
+  cursor:pointer;
+  box-shadow: 5px 5px 2px 1px rgba(193, 193, 218, 0.486);
+ }
+ 
+ 
+
+.th{
+  background-color: rgb(245, 245, 245);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  }
+  
+
+tr:first-child td:first-child {
+  border-top-left-radius: 10px;
+}
+
+tr:first-child td:last-child {
+  border-top-right-radius: 10px;
+}
+
+
+td:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+
+td:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+
+tr:last-child td:first-child {
+  border-bottom-left-radius: 10px;
+}
+
+
+tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
+}
+
+
+
+
+
+th:last-child{
+  border-bottom-right-radius: 10px;
+}
+th:first-child{
+  border-bottom-left-radius: 10px;
+}
+
+
+
+th:last-child{
+  border-top-right-radius: 10px;
+}
+th:first-child{
+  border-top-left-radius: 10px;
+}
+.btn-donate{
+  padding: 10px;
+  width: 100px;
+}
+
+

@@ -1,0 +1,28 @@
+<app-load></app-load>
+
+<p>Informations sur les clicks de la partie</p>
+<table mat-table [dataSource]="dataSource"  class="mat-elevation-z8">
+    <ng-container matColumnDef="numPartie">
+      <th mat-header-cell *matHeaderCellDef> numéro de partie </th>
+      <td mat-cell *matCellDef="let element"> {{element.numPartie}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="numClick">
+      <th mat-header-cell *matHeaderCellDef> numéro click </th>
+      <td mat-cell *matCellDef="let element"> {{element.numClick}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="valClickChrono">
+      <th mat-header-cell *matHeaderCellDef> Chrono </th>
+      <td mat-cell *matCellDef="let element"> {{element.valClickChrono}} ms</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]="{'th': true}"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"   [ngClass]="{'tr': true}"></tr>
+  </table>
+  <div>
+    <mat-paginator
+    [length]="this.clicks.length"
+    [pageSize]="2"
+    [pageSizeOptions]="[2, 6, 9]"
+    (page)="OnPageChange($event)"
+    ></mat-paginator>

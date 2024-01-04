@@ -1,0 +1,11 @@
+
+
+<div class="div">
+    <button class="btn-donate" routerLink="/app-jeu"  >Entrez dans le jeu</button>
+    <button class="btn-donate" [routerLink]="['/affichage-score']" [state]="{ id:'affichage-score'}"  >Voir les scores</button>
+    <button class="btn-donate"   [routerLink]="['/app-authentification','app-jeu']" [state]="{ id:'app-jeu'}">S'authenfier</button>
+    <button class="btn-donate" id="deco">Se deconnecter</button>
+</div>
+
+
+
