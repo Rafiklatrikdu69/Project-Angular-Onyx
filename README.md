@@ -1,4 +1,4 @@
-# Project-Angular-Onyx
+# TurboTap
 ## Lancement du projet Angular :
 - cd .\turboTap\app-image\src\app\
 - taper ng serve dans le terminal
